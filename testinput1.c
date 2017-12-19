@@ -5,7 +5,7 @@ int main() {
   int c;
   float b;
   1 << c;
-  1 << b;
+//  1 << b;
 //  int a = 0, b = 1;
 //  int c = a + b;
 //  int d = 1 + 2 - 3 / 4 * 5 - 3 <= 4;
