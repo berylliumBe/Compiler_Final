@@ -64,7 +64,7 @@
 %token <str> TIDENTIFIER TINTEGER TDOUBLE TCHAR
 %token <token> TCEQ TCNE TCLT TCLE TCGT TCGE TEQUAL
 %token <token> TLPAREN TRPAREN TLBRACE TRBRACE TCOMMA TDOT TSEMICOLON
-%token <token> TPLUS TMINUS TMUL TDIV TMOD
+%token <token> TPLUS TMINUS TMUL TDIV TMOD TSADD TSMINUS
 %token <token> TREAD TWRITE
 %token <token> TNOT TAND TOR
 %token <token> TBNOT TBAND TBOR TBXOR
@@ -75,7 +75,7 @@
    we call an ident (defined by union type ident) we are really
    calling an (NIdentifier*). It makes the compiler happy.
  */
-%type <expr> expr expr1 expr2 expr3 expr4 expr5 expr6 expr7 expr8 optional_expr factor0
+%type <expr> expr0 expr1 expr2 expr3 expr4 expr5 expr6 expr7 expr8 expr9 expr10 expr11 expr12 optional_expr
 //%type <block> program stmts block
 %type <stmt> stmt matched_stmt open_stmt
 //%type <token> comparison
@@ -193,13 +193,13 @@ args_list : arg { $<args_list>$ = new Node("ARGS_LIST");
                           $<args_list>$->Children.insert(it, $<expr>1); }
            ;
 
-arg : factor0 TEQUAL expr1 { $<expr>$ = new Node("EXPR", "DECL_ASSIGN");
-                             assert($<expr>1->IsLit == false);
-                             $<expr>$->Children.push_back($<expr>1);
-                             $<expr>$->Children.push_back($<expr>3); }
-    | factor0 { assert($<expr>1->IsLit == false);
-                $<expr>$ = new Node("EXPR", "DECL_ARG");
-                $<expr>$->Children.push_back($<expr>1); }
+arg : identifier TEQUAL expr { $<expr>$ = new Node("EXPR", "DECL_ASSIGN");
+                               assert($<expr>1->IsLit == false);
+                               $<expr>$->Children.push_back($<expr>1);
+                               $<expr>$->Children.push_back($<expr>3); }
+    | identifier { assert($<expr>1->IsLit == false);
+                   $<expr>$ = new Node("EXPR", "DECL_ARG");
+                   $<expr>$->Children.push_back($<expr>1); }
     ;
 
 expr : expr1 TEQUAL expr { $<expr>$ = new Node("EXPR", "ASSIGN");
@@ -207,69 +207,69 @@ expr : expr1 TEQUAL expr { $<expr>$ = new Node("EXPR", "ASSIGN");
                             $<expr>$->Children.push_back($<expr>3);
                             assert($<expr>1->IsLit == false);
                           }
-     | expr1 { $<expr>$ = $<expr>1; }
+     | expr12 { $<expr>$ = $<expr>1; }
      ;
 
 optional_expr : expr_and_decl { $<expr>$ = $<expr>1; }
               | /* empty */ { $<expr>$ = new Node("OPTIONAL_EXPR", "EMPTY"); }
               ;
 
-expr1 : expr2 TOR expr1 { $<expr>$ = new Node("EXPR", "OR");
-                            assert($<expr>1->type == "int_char" || $<expr>1->type == "double_float");
-                            assert($<expr>3->type == "int_char" || $<expr>3->type == "double_float");
-                            $<expr>$->type = "int_char";
-                            if ($<expr>1->IsLit && $<expr>3->IsLit) {
-                              $<expr>$->IsLit = true;
-                              if (std::stod($<expr>1->NodeValue) != 0.0 || std::stod($<expr>3->NodeValue) != 0.0) {
-                                $<expr>$->NodeValue = "1";
-                              }
-                              else {
-                                $<expr>$->NodeValue = "0";
-                              }
-                            } else {
-                              $<expr>$->Children.push_back($<factor>1);
-                              $<expr>$->Children.push_back($<term>3);
-                            }
-                          }
-      | expr2 { $<expr>$ = $<expr>1; }
-      ;
+expr12 : expr11 TOR expr12 { $<expr>$ = new Node("EXPR", "OR");
+                             assert($<expr>1->type == "int_char" || $<expr>1->type == "double_float");
+                             assert($<expr>3->type == "int_char" || $<expr>3->type == "double_float");
+                             $<expr>$->type = "int_char";
+                             if ($<expr>1->IsLit && $<expr>3->IsLit) {
+                               $<expr>$->IsLit = true;
+                               if (std::stod($<expr>1->NodeValue) != 0.0 || std::stod($<expr>3->NodeValue) != 0.0) {
+                                 $<expr>$->NodeValue = "1";
+                               }
+                               else {
+                                 $<expr>$->NodeValue = "0";
+                               }
+                             } else {
+                               $<expr>$->Children.push_back($<factor>1);
+                               $<expr>$->Children.push_back($<term>3);
+                             }
+                           }
+       | expr11 { $<expr>$ = $<expr>1; }
+       ;
 
-expr2 : expr3 TAND expr2 { $<expr>$ = new Node("EXPR", "AND");
-                            assert($<expr>1->type == "int_char" || $<expr>1->type == "double_float");
-                            assert($<expr>3->type == "int_char" || $<expr>3->type == "double_float");
-                            $<expr>$->type = "int_char";
-                            if ($<expr>1->IsLit && $<expr>3->IsLit) {
-                              $<expr>$->IsLit = true;
-                              if (std::stod($<expr>1->NodeValue) != 0.0 && std::stod($<expr>3->NodeValue) != 0.0) {
-                                $<expr>$->NodeValue = "1";
-                              }
-                              else {
-                                $<expr>$->NodeValue = "0";
-                              }
-                            } else {
-                              $<expr>$->Children.push_back($<factor>1);
-                              $<expr>$->Children.push_back($<term>3);
-                            }
-                          }
-      | expr3 { $<expr>$ = $<expr>1; }
-      ;
+expr11 : expr10 TAND expr11 { $<expr>$ = new Node("EXPR", "AND");
+                             assert($<expr>1->type == "int_char" || $<expr>1->type == "double_float");
+                             assert($<expr>3->type == "int_char" || $<expr>3->type == "double_float");
+                             $<expr>$->type = "int_char";
+                             if ($<expr>1->IsLit && $<expr>3->IsLit) {
+                               $<expr>$->IsLit = true;
+                               if (std::stod($<expr>1->NodeValue) != 0.0 && std::stod($<expr>3->NodeValue) != 0.0) {
+                                 $<expr>$->NodeValue = "1";
+                               }
+                               else {
+                                 $<expr>$->NodeValue = "0";
+                               }
+                             } else {
+                               $<expr>$->Children.push_back($<factor>1);
+                               $<expr>$->Children.push_back($<term>3);
+                             }
+                           }
+       | expr10 { $<expr>$ = $<expr>1; }
+       ;
 
-expr3 : expr4 TBOR expr3 { $<expr>$ = new Node("EXPR", "BOR");
-                            assert($<expr>1->type == "int_char");
-                            assert($<expr>3->type == "int_char");
-                            $<expr>$->type = "int_char";
-                            if ($<expr>1->IsLit && $<expr>3->IsLit) {
-                              $<expr>$->IsLit = true;
-                              $<expr>$->NodeValue = std::to_string(std::stoi($<expr>1->NodeValue) | std::stoi($<expr>3->NodeValue));
-                            } else {
-                              $<expr>$->Children.push_back($<factor>1);
-                              $<expr>$->Children.push_back($<term>3);
-                            }
-                          }
-      | expr4 { $<expr>$ = $<expr>1; }
-      ;
+expr10 : expr9 TBOR expr10 { $<expr>$ = new Node("EXPR", "BOR");
+                             assert($<expr>1->type == "int_char");
+                             assert($<expr>3->type == "int_char");
+                             $<expr>$->type = "int_char";
+                             if ($<expr>1->IsLit && $<expr>3->IsLit) {
+                               $<expr>$->IsLit = true;
+                               $<expr>$->NodeValue = std::to_string(std::stoi($<expr>1->NodeValue) | std::stoi($<expr>3->NodeValue));
+                             } else {
+                               $<expr>$->Children.push_back($<factor>1);
+                               $<expr>$->Children.push_back($<term>3);
+                             }
+                           }
+       | expr9 { $<expr>$ = $<expr>1; }
+       ;
 
-expr4 : expr5 TBXOR expr4 { $<expr>$ = new Node("EXPR", "BXOR");
+expr9 : expr8 TBXOR expr9 { $<expr>$ = new Node("EXPR", "BXOR");
                             assert($<expr>1->type == "int_char");
                             assert($<expr>3->type == "int_char");
                             $<expr>$->type = "int_char";
@@ -281,10 +281,10 @@ expr4 : expr5 TBXOR expr4 { $<expr>$ = new Node("EXPR", "BXOR");
                               $<expr>$->Children.push_back($<term>3);
                             }
                           }
-      | expr5 { $<expr>$ = $<expr>1; }
+      | expr8 { $<expr>$ = $<expr>1; }
       ;
 
-expr5 : expr6 TBAND expr5 { $<expr>$ = new Node("EXPR", "TBAND");
+expr8 : expr7 TBAND expr8 { $<expr>$ = new Node("EXPR", "TBAND");
                             assert($<expr>1->type == "int_char");
                             assert($<expr>3->type == "int_char");
                             $<expr>$->type = "int_char";
@@ -296,10 +296,10 @@ expr5 : expr6 TBAND expr5 { $<expr>$ = new Node("EXPR", "TBAND");
                               $<expr>$->Children.push_back($<term>3);
                             }
                           }
-      | expr6 { $<expr>$ = $<expr>1; }
+      | expr7 { $<expr>$ = $<expr>1; }
       ;
 
-expr6 : expr7 TCEQ expr6 { $<expr>$ = new Node("EXPR", "COMP_EQL");
+expr7 : expr6 TCEQ expr7 { $<expr>$ = new Node("EXPR", "COMP_EQL");
                            assert($<expr>1->type == "int_char" || $<expr>1->type == "double_float");
                            assert($<expr>3->type == "int_char" || $<expr>3->type == "double_float");
                            $<expr>$->type = "int_char";
@@ -314,7 +314,7 @@ expr6 : expr7 TCEQ expr6 { $<expr>$ = new Node("EXPR", "COMP_EQL");
                              $<expr>$->Children.push_back($<term>3);
                            }
                          }
-       | expr7 TCNE expr6 { $<expr>$ = new Node("EXPR", "COMP_NE");
+       | expr6 TCNE expr7 { $<expr>$ = new Node("EXPR", "COMP_NE");
                             assert($<expr>1->type == "int_char" || $<expr>1->type == "double_float");
                             assert($<expr>3->type == "int_char" || $<expr>3->type == "double_float");
                             $<expr>$->type = "int_char";
@@ -329,10 +329,10 @@ expr6 : expr7 TCEQ expr6 { $<expr>$ = new Node("EXPR", "COMP_EQL");
                               $<expr>$->Children.push_back($<term>3);
                             }
                           }
-       | expr7 { $<expr>$ = $<expr>1; }
+       | expr6 { $<expr>$ = $<expr>1; }
        ;
 
-expr7 : expr8 TCLT expr7 { $<expr>$ = new Node("EXPR", "COMP_LT");
+expr6 : expr5 TCLT expr6 { $<expr>$ = new Node("EXPR", "COMP_LT");
                            assert($<expr>1->type == "int_char" || $<expr>1->type == "double_float");
                            assert($<expr>3->type == "int_char" || $<expr>3->type == "double_float");
                            $<expr>$->type = "int_char";
@@ -347,7 +347,7 @@ expr7 : expr8 TCLT expr7 { $<expr>$ = new Node("EXPR", "COMP_LT");
                              $<expr>$->Children.push_back($<term>3);
                            }
                          }
-       | expr8 TCGT expr7 { $<expr>$ = new Node("EXPR", "COMP_GT");
+       | expr5 TCGT expr6 { $<expr>$ = new Node("EXPR", "COMP_GT");
                             assert($<expr>1->type == "int_char" || $<expr>1->type == "double_float");
                             assert($<expr>3->type == "int_char" || $<expr>3->type == "double_float");
                             $<expr>$->type = "int_char";
@@ -362,7 +362,7 @@ expr7 : expr8 TCLT expr7 { $<expr>$ = new Node("EXPR", "COMP_LT");
                               $<expr>$->Children.push_back($<term>3);
                             }
                           }
-       | expr8 TCLE expr7 { $<expr>$ = new Node("EXPR", "COMP_LE");
+       | expr5 TCLE expr6 { $<expr>$ = new Node("EXPR", "COMP_LE");
                             assert($<expr>1->type == "int_char" || $<expr>1->type == "double_float");
                             assert($<expr>3->type == "int_char" || $<expr>3->type == "double_float");
                             $<expr>$->type = "int_char";
@@ -377,7 +377,7 @@ expr7 : expr8 TCLT expr7 { $<expr>$ = new Node("EXPR", "COMP_LT");
                               $<expr>$->Children.push_back($<term>3);
                             }
                           }
-       | expr8 TCGE expr7 { $<expr>$ = new Node("EXPR", "COMP_GE");
+       | expr5 TCGE expr6 { $<expr>$ = new Node("EXPR", "COMP_GE");
                             assert($<expr>1->type == "int_char" || $<expr>1->type == "double_float");
                             assert($<expr>3->type == "int_char" || $<expr>3->type == "double_float");
                             $<expr>$->type = "int_char";
@@ -392,70 +392,70 @@ expr7 : expr8 TCLT expr7 { $<expr>$ = new Node("EXPR", "COMP_LT");
                               $<expr>$->Children.push_back($<term>3);
                             }
                           }
-       | expr8 { $<expr>$ = $<expr>1; }
+       | expr5 { $<expr>$ = $<expr>1; }
       ;
 
-expr8 : expr_alg TBLEFT expr8 { $<expr>$ = new Node("EXPR", "BLEFT");
-                                assert($<expr>1->type == "int_char");
-                                assert($<expr>3->type == "int_char");
-                                $<expr>$->type = "int_char";
-                                if ($<expr>1->IsLit && $<expr>3->IsLit) {
-                                  $<expr>$->IsLit = true;
-                                    $<expr>$->NodeValue = std::to_string(std::stoi($<expr>1->NodeValue) << std::stoi($<expr>3->NodeValue));
-                                } else {
-                                  $<expr>$->Children.push_back($<factor>1);
-                                  $<expr>$->Children.push_back($<term>3);
-                                }
+expr5 : expr4 TBLEFT expr5 { $<expr>$ = new Node("EXPR", "BLEFT");
+                             assert($<expr>1->type == "int_char");
+                             assert($<expr>3->type == "int_char");
+                             $<expr>$->type = "int_char";
+                             if ($<expr>1->IsLit && $<expr>3->IsLit) {
+                               $<expr>$->IsLit = true;
+                               $<expr>$->NodeValue = std::to_string(std::stoi($<expr>1->NodeValue) << std::stoi($<expr>3->NodeValue));
+                             } else {
+                               $<expr>$->Children.push_back($<factor>1);
+                               $<expr>$->Children.push_back($<term>3);
+                             }
+                           }
+      | expr4 TBRIGHT expr5 { $<expr>$ = new Node("EXPR", "BRIGHT");
+                              assert($<expr>1->type == "int_char");
+                              assert($<expr>3->type == "int_char");
+                              $<expr>$->type = "int_char";
+                              if ($<expr>1->IsLit && $<expr>3->IsLit) {
+                                $<expr>$->IsLit = true;
+                                $<expr>$->NodeValue = std::to_string(std::stoi($<expr>1->NodeValue) >> std::stoi($<expr>3->NodeValue));
+                              } else {
+                                $<expr>$->Children.push_back($<factor>1);
+                                $<expr>$->Children.push_back($<term>3);
                               }
-      | expr_alg TBRIGHT expr8 { $<expr>$ = new Node("EXPR", "BRIGHT");
-                                 assert($<expr>1->type == "int_char");
-                                 assert($<expr>3->type == "int_char");
-                                 $<expr>$->type = "int_char";
-                                 if ($<expr>1->IsLit && $<expr>3->IsLit) {
-                                   $<expr>$->IsLit = true;
-                                     $<expr>$->NodeValue = std::to_string(std::stoi($<expr>1->NodeValue) >> std::stoi($<expr>3->NodeValue));
-                                 } else {
-                                   $<expr>$->Children.push_back($<factor>1);
-                                   $<expr>$->Children.push_back($<term>3);
-                                 }
-                               }
-      | expr_alg { $<expr>$ = $<expr>1; }
+                            }
+      | expr4 { $<expr>$ = $<expr>1; }
       ;
 
-expr_alg : expr_alg TPLUS term { $<expr>$ = new Node("EXPR", "ADD");
-                                 assert($<expr>1->type == "int_char" || $<expr>1->type == "double_float");
-                                 assert($<expr>3->type == "int_char" || $<expr>3->type == "double_float");
-                                 $<expr>$->type = MoreAccurate($<expr>1->type, $<expr>3->type);
-                                 if ($<expr>1->IsLit && $<expr>3->IsLit) {
-                                   $<expr>$->IsLit = true;
-                                   if ($<expr>$->type == "int_char")
-                                     $<expr>$->NodeValue = std::to_string(std::stoi($<expr>1->NodeValue) + std::stoi($<expr>3->NodeValue));
-                                   else
-                                     $<expr>$->NodeValue = std::to_string(std::stod($<expr>1->NodeValue) + std::stod($<expr>3->NodeValue));
-                                 } else {
-                                   $<expr>$->Children.push_back($<factor>1);
-                                   $<expr>$->Children.push_back($<term>3);
-                                 }
-                               }
-         | expr_alg TMINUS term { $<expr>$ = new Node("EXPR", "MINUS");
-                                  assert($<expr>1->type == "int_char" || $<expr>1->type == "double_float");
-                                  assert($<expr>3->type == "int_char" || $<expr>3->type == "double_float");
-                                  $<expr>$->type = MoreAccurate($<expr>1->type, $<expr>3->type);
-                                  if ($<expr>1->IsLit && $<expr>3->IsLit) {
-                                    $<expr>$->IsLit = true;
-                                    if ($<expr>$->type == "int_char")
-                                      $<expr>$->NodeValue = std::to_string(std::stoi($<expr>1->NodeValue) - std::stoi($<expr>3->NodeValue));
-                                    else
-                                      $<expr>$->NodeValue = std::to_string(std::stod($<expr>1->NodeValue) - std::stod($<expr>3->NodeValue));
-                                  } else {
-                                    $<expr>$->Children.push_back($<factor>1);
-                                    $<expr>$->Children.push_back($<term>3);
-                                  }
-                                }
-         | term { $<expr>$ = $<expr>1; }
-         ;
+expr4 : expr4 TPLUS expr3 { $<expr>$ = new Node("EXPR", "ADD");
+                            assert($<expr>1->type == "int_char" || $<expr>1->type == "double_float");
+                            assert($<expr>3->type == "int_char" || $<expr>3->type == "double_float");
+                            $<expr>$->type = MoreAccurate($<expr>1->type, $<expr>3->type);
+                            if ($<expr>1->IsLit && $<expr>3->IsLit) {
+                              $<expr>$->IsLit = true;
+                              if ($<expr>$->type == "int_char")
+                                $<expr>$->NodeValue = std::to_string(std::stoi($<expr>1->NodeValue) + std::stoi($<expr>3->NodeValue));
+                              else
+                                $<expr>$->NodeValue = std::to_string(std::stod($<expr>1->NodeValue) + std::stod($<expr>3->NodeValue));
+                            } else {
+                              $<expr>$->Children.push_back($<factor>1);
+                              $<expr>$->Children.push_back($<term>3);
+                            }
+                          }
+      | expr4 TMINUS expr3 { $<expr>$ = new Node("EXPR", "MINUS");
+                             assert($<expr>1->type == "int_char" || $<expr>1->type == "double_float");
+                             assert($<expr>3->type == "int_char" || $<expr>3->type == "double_float");
+                             $<expr>$->type = MoreAccurate($<expr>1->type, $<expr>3->type);
+                             if ($<expr>1->IsLit && $<expr>3->IsLit) {
+                               $<expr>$->IsLit = true;
+                               if ($<expr>$->type == "int_char")
+                                 $<expr>$->NodeValue = std::to_string(std::stoi($<expr>1->NodeValue) - std::stoi($<expr>3->NodeValue));
+                               else
+                                 $<expr>$->NodeValue = std::to_string(std::stod($<expr>1->NodeValue) - std::stod($<expr>3->NodeValue));
+                             } else {
+                               $<expr>$->Children.push_back($<factor>1);
+                               $<expr>$->Children.push_back($<term>3);
+                             }
+                           }
+      | expr3 { $<expr>$ = $<expr>1; }
+      ;
 
-term : factor TMUL term { $<expr>$ = new Node("EXPR", "MUL");
+expr3 : expr2 TMUL expr3 { $<expr>$ = new Node("EXPR", "MUL");
                           assert($<expr>1->type == "int_char" || $<expr>1->type == "double_float");
                           assert($<expr>3->type == "int_char" || $<expr>3->type == "double_float");
                           $<expr>$->type = MoreAccurate($<expr>1->type, $<expr>3->type);
@@ -470,7 +470,7 @@ term : factor TMUL term { $<expr>$ = new Node("EXPR", "MUL");
                             $<expr>$->Children.push_back($<term>3);
                           }
                         }
-     | factor TDIV term { $<expr>$ = new Node("EXPR", "DIV");
+     | expr2 TDIV expr3 { $<expr>$ = new Node("EXPR", "DIV");
                           assert($<expr>1->type == "int_char" || $<expr>1->type == "double_float");
                           assert($<expr>3->type == "int_char" || $<expr>3->type == "double_float");
                           $<expr>$->type = MoreAccurate($<expr>1->type, $<expr>3->type);
@@ -485,7 +485,7 @@ term : factor TMUL term { $<expr>$ = new Node("EXPR", "MUL");
                             $<expr>$->Children.push_back($<term>3);
                           }
                         }
-     | factor TMOD term { $<expr>$ = new Node("EXPR", "MOD");
+     | expr2 TMOD expr3 { $<expr>$ = new Node("EXPR", "MOD");
                           assert($<expr>1->type == "int_char");
                           assert($<expr>3->type == "int_char");
                           $<expr>$->type = "int_char";
@@ -497,54 +497,61 @@ term : factor TMUL term { $<expr>$ = new Node("EXPR", "MUL");
                             $<expr>$->Children.push_back($<term>3);
                           }
                         }
-     | factor { $<term>$ = $<term>1; }
+     | expr2 { $<term>$ = $<term>1; }
      ;
 
-factor : TNOT factor0 { $<expr>$ = new Node("EXPR", "NOT");
-                        assert($<expr>2->type == "int_char" || $<expr>2->type == "double_float");
-                        $<expr>$->type = "int_char";
-                        if ($<expr>2->IsLit) {
-                          $<expr>$->IsLit = true;
-                          if (std::stod($<expr>2->NodeValue) != 0.0) {
-                            $<expr>$->NodeValue = "0";
-                          } else {
-                            $<expr>$->NodeValue = "1";
-                          }
-                        } else {
-                          $<expr>$->Children.push_back($<expr>2);
-                        } }
-       | TBNOT factor0 { $<expr>$ = new Node("EXPR", "BNOT");
-                         assert($<expr>2->type == "int_char");
-                         $<expr>$->type = "int_char";
-                         if ($<expr>2->IsLit) {
-                           $<expr>$->IsLit = true;
-                           $<expr>$->NodeValue = std::to_string(~std::stoi($<expr>2->NodeValue));
-                         } else {
-                           $<expr>$->Children.push_back($<expr>2);
-                         } }
-       | factor0 { $<term>$ = $<term>1; }
-       ;
-
-factor0 : TLPAREN expr TRPAREN { $<expr>$ = $<expr>2; }
-       | identifier { $<factor>$ = $<expr>1; }
-       | TINTEGER { $<factor>$ = new Node("VAL", $1, "", "int_char");
-                    $<expr>$->IsLit = true; }
-       | TDOUBLE { $<factor>$ = new Node("VAL", $1, "", "double_float");
-                   $<expr>$->IsLit = true; }
-       | TCHAR { $<factor>$ = new Node("VAL", $1, "", "int_char");
-                 $<expr>$->IsLit = true; }
-       | TMINUS TINTEGER { $<factor>$ = new Node("VAL", $2, "NEG", "int_char");
-                           $<expr>$->IsLit = true; }
-       | TPLUS TINTEGER { $<factor>$ = new Node("VAL", $2, "", "int_char");
+expr2 : TMINUS TINTEGER { $<factor>$ = new Node("VAL", $2, "NEG", "int_char");
                           $<expr>$->IsLit = true; }
-       ;
+      | TPLUS TINTEGER { $<factor>$ = new Node("VAL", $2, "", "int_char");
+                         $<expr>$->IsLit = true; }
+      | TSADD identifier {}
+      | TSMINUS identifier {}
+      | identifier TSADD {}
+      | identifier TSMINUS {}
+      | TNOT expr1 { $<expr>$ = new Node("EXPR", "NOT");
+                     assert($<expr>2->type == "int_char" || $<expr>2->type == "double_float");
+                     $<expr>$->type = "int_char";
+                     if ($<expr>2->IsLit) {
+                        $<expr>$->IsLit = true;
+                        if (std::stod($<expr>2->NodeValue) != 0.0) {
+                          $<expr>$->NodeValue = "0";
+                        } else {
+                          $<expr>$->NodeValue = "1";
+                        }
+                     } else {
+                        $<expr>$->Children.push_back($<expr>2);
+                     } }
+      | TBNOT expr1 { $<expr>$ = new Node("EXPR", "BNOT");
+                      assert($<expr>2->type == "int_char");
+                      $<expr>$->type = "int_char";
+                      if ($<expr>2->IsLit) {
+                        $<expr>$->IsLit = true;
+                        $<expr>$->NodeValue = std::to_string(~std::stoi($<expr>2->NodeValue));
+                      } else {
+                        $<expr>$->Children.push_back($<expr>2);
+                      } }
+      | expr1 { $<term>$ = $<term>1; }
+      ;
+
+expr1 : TLPAREN expr TRPAREN { $<expr>$ = $<expr>2; }
+      | expr0 { $<factor>$ = $<expr>1; }
+      ;
+
+expr0 : identifier { $<factor>$ = $<expr>1; }
+      | TINTEGER { $<factor>$ = new Node("VAL", $1, "", "int_char");
+                   $<expr>$->IsLit = true; }
+      | TDOUBLE { $<factor>$ = new Node("VAL", $1, "", "double_float");
+                  $<expr>$->IsLit = true; }
+      | TCHAR { $<factor>$ = new Node("VAL", $1, "", "int_char");
+                $<expr>$->IsLit = true; }
+      ;
 
 identifier : TIDENTIFIER { $<identifier>$ = new Node("VAR", $1);
                            std::string var = $1;
                            if (IdTable.find(var) != IdTable.end()) {
                              $<identifier>$->type = IdTable.find(var)->second;
                            }
-                         }
+                          }
            ;
 
 %%

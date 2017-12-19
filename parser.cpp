@@ -97,17 +97,19 @@
      TMUL = 286,
      TDIV = 287,
      TMOD = 288,
-     TREAD = 289,
-     TWRITE = 290,
-     TNOT = 291,
-     TAND = 292,
-     TOR = 293,
-     TBNOT = 294,
-     TBAND = 295,
-     TBOR = 296,
-     TBXOR = 297,
-     TBLEFT = 298,
-     TBRIGHT = 299
+     TSADD = 289,
+     TSMINUS = 290,
+     TREAD = 291,
+     TWRITE = 292,
+     TNOT = 293,
+     TAND = 294,
+     TOR = 295,
+     TBNOT = 296,
+     TBAND = 297,
+     TBOR = 298,
+     TBXOR = 299,
+     TBLEFT = 300,
+     TBRIGHT = 301
    };
 #endif
 /* Tokens.  */
@@ -142,17 +144,19 @@
 #define TMUL 286
 #define TDIV 287
 #define TMOD 288
-#define TREAD 289
-#define TWRITE 290
-#define TNOT 291
-#define TAND 292
-#define TOR 293
-#define TBNOT 294
-#define TBAND 295
-#define TBOR 296
-#define TBXOR 297
-#define TBLEFT 298
-#define TBRIGHT 299
+#define TSADD 289
+#define TSMINUS 290
+#define TREAD 291
+#define TWRITE 292
+#define TNOT 293
+#define TAND 294
+#define TOR 295
+#define TBNOT 296
+#define TBAND 297
+#define TBOR 298
+#define TBXOR 299
+#define TBLEFT 300
+#define TBRIGHT 301
 
 
 
@@ -235,7 +239,7 @@ typedef union YYSTYPE
     char *str;
 }
 /* Line 193 of yacc.c.  */
-#line 239 "parser.cpp"
+#line 243 "parser.cpp"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -248,7 +252,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 252 "parser.cpp"
+#line 256 "parser.cpp"
 
 #ifdef short
 # undef short
@@ -463,20 +467,20 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  4
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   167
+#define YYLAST   216
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  45
+#define YYNTOKENS  47
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  26
+#define YYNNTS  27
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  70
+#define YYNRULES  75
 /* YYNRULES -- Number of states.  */
-#define YYNSTATES  138
+#define YYNSTATES  147
 
 /* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   299
+#define YYMAXUTOK   301
 
 #define YYTRANSLATE(YYX)						\
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
@@ -513,7 +517,8 @@ static const yytype_uint8 yytranslate[] =
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-      35,    36,    37,    38,    39,    40,    41,    42,    43,    44
+      35,    36,    37,    38,    39,    40,    41,    42,    43,    44,
+      45,    46
 };
 
 #if YYDEBUG
@@ -527,37 +532,38 @@ static const yytype_uint8 yyprhs[] =
      109,   111,   112,   116,   118,   122,   124,   128,   130,   134,
      136,   140,   142,   146,   150,   152,   156,   160,   164,   168,
      170,   174,   178,   180,   184,   188,   190,   194,   198,   202,
-     204,   207,   210,   212,   216,   218,   220,   222,   224,   227,
-     230
+     204,   207,   210,   213,   216,   219,   222,   225,   228,   230,
+     234,   236,   238,   240,   242,   244
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
 static const yytype_int8 yyrhs[] =
 {
-      46,     0,    -1,     3,    11,    22,    23,    47,    -1,    24,
-      48,    25,    -1,    28,    -1,    49,    48,    -1,    -1,    50,
-      -1,    51,    -1,     7,    22,    56,    23,    50,     8,    50,
-      -1,    52,    28,    -1,    47,    -1,    34,    22,    70,    23,
-      28,    -1,    35,    22,    56,    23,    28,    -1,     9,    22,
-      52,    23,    50,    -1,    10,    22,    57,    28,    57,    28,
-      57,    23,    50,    -1,     7,    22,    56,    23,    49,    -1,
-       7,    22,    56,    23,    50,     8,    51,    -1,    56,    -1,
-      53,    54,    -1,     3,    -1,     4,    -1,     5,    -1,     6,
-      -1,    55,    -1,    55,    26,    54,    -1,    69,    21,    58,
-      -1,    69,    -1,    58,    21,    56,    -1,    58,    -1,    52,
-      -1,    -1,    59,    38,    58,    -1,    59,    -1,    60,    37,
-      59,    -1,    60,    -1,    61,    41,    60,    -1,    61,    -1,
-      62,    42,    61,    -1,    62,    -1,    63,    40,    62,    -1,
-      63,    -1,    64,    15,    63,    -1,    64,    16,    63,    -1,
-      64,    -1,    65,    17,    64,    -1,    65,    19,    64,    -1,
-      65,    18,    64,    -1,    65,    20,    64,    -1,    65,    -1,
-      66,    43,    65,    -1,    66,    44,    65,    -1,    66,    -1,
-      66,    29,    67,    -1,    66,    30,    67,    -1,    67,    -1,
-      68,    31,    67,    -1,    68,    32,    67,    -1,    68,    33,
-      67,    -1,    68,    -1,    36,    69,    -1,    39,    69,    -1,
-      69,    -1,    22,    56,    23,    -1,    70,    -1,    12,    -1,
-      13,    -1,    14,    -1,    30,    12,    -1,    29,    12,    -1,
-      11,    -1
+      48,     0,    -1,     3,    11,    22,    23,    49,    -1,    24,
+      50,    25,    -1,    28,    -1,    51,    50,    -1,    -1,    52,
+      -1,    53,    -1,     7,    22,    58,    23,    52,     8,    52,
+      -1,    54,    28,    -1,    49,    -1,    36,    22,    73,    23,
+      28,    -1,    37,    22,    58,    23,    28,    -1,     9,    22,
+      54,    23,    52,    -1,    10,    22,    59,    28,    59,    28,
+      59,    23,    52,    -1,     7,    22,    58,    23,    51,    -1,
+       7,    22,    58,    23,    52,     8,    53,    -1,    58,    -1,
+      55,    56,    -1,     3,    -1,     4,    -1,     5,    -1,     6,
+      -1,    57,    -1,    57,    26,    56,    -1,    73,    21,    58,
+      -1,    73,    -1,    71,    21,    58,    -1,    60,    -1,    54,
+      -1,    -1,    61,    40,    60,    -1,    61,    -1,    62,    39,
+      61,    -1,    62,    -1,    63,    43,    62,    -1,    63,    -1,
+      64,    44,    63,    -1,    64,    -1,    65,    42,    64,    -1,
+      65,    -1,    66,    15,    65,    -1,    66,    16,    65,    -1,
+      66,    -1,    67,    17,    66,    -1,    67,    19,    66,    -1,
+      67,    18,    66,    -1,    67,    20,    66,    -1,    67,    -1,
+      68,    45,    67,    -1,    68,    46,    67,    -1,    68,    -1,
+      68,    29,    69,    -1,    68,    30,    69,    -1,    69,    -1,
+      70,    31,    69,    -1,    70,    32,    69,    -1,    70,    33,
+      69,    -1,    70,    -1,    30,    12,    -1,    29,    12,    -1,
+      34,    73,    -1,    35,    73,    -1,    73,    34,    -1,    73,
+      35,    -1,    38,    71,    -1,    41,    71,    -1,    71,    -1,
+      22,    58,    23,    -1,    72,    -1,    73,    -1,    12,    -1,
+      13,    -1,    14,    -1,    11,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
@@ -569,8 +575,8 @@ static const yytype_uint16 yyrline[] =
      213,   214,   217,   234,   237,   254,   257,   269,   272,   284,
      287,   299,   302,   317,   332,   335,   350,   365,   380,   395,
      398,   410,   422,   425,   440,   455,   458,   473,   488,   500,
-     503,   516,   525,   528,   529,   530,   532,   534,   536,   538,
-     542
+     503,   505,   507,   508,   509,   510,   511,   524,   533,   536,
+     537,   540,   541,   543,   545,   549
 };
 #endif
 
@@ -583,12 +589,13 @@ static const char *const yytname[] =
   "ELSE", "WHILE", "FOR", "TIDENTIFIER", "TINTEGER", "TDOUBLE", "TCHAR",
   "TCEQ", "TCNE", "TCLT", "TCLE", "TCGT", "TCGE", "TEQUAL", "TLPAREN",
   "TRPAREN", "TLBRACE", "TRBRACE", "TCOMMA", "TDOT", "TSEMICOLON", "TPLUS",
-  "TMINUS", "TMUL", "TDIV", "TMOD", "TREAD", "TWRITE", "TNOT", "TAND",
-  "TOR", "TBNOT", "TBAND", "TBOR", "TBXOR", "TBLEFT", "TBRIGHT", "$accept",
-  "start", "comp_stmt", "stmts", "stmt", "matched_stmt", "open_stmt",
-  "expr_and_decl", "type", "args_list", "arg", "expr", "optional_expr",
-  "expr1", "expr2", "expr3", "expr4", "expr5", "expr6", "expr7", "expr8",
-  "expr_alg", "term", "factor", "factor0", "identifier", 0
+  "TMINUS", "TMUL", "TDIV", "TMOD", "TSADD", "TSMINUS", "TREAD", "TWRITE",
+  "TNOT", "TAND", "TOR", "TBNOT", "TBAND", "TBOR", "TBXOR", "TBLEFT",
+  "TBRIGHT", "$accept", "start", "comp_stmt", "stmts", "stmt",
+  "matched_stmt", "open_stmt", "expr_and_decl", "type", "args_list", "arg",
+  "expr", "optional_expr", "expr12", "expr11", "expr10", "expr9", "expr8",
+  "expr7", "expr6", "expr5", "expr4", "expr3", "expr2", "expr1", "expr0",
+  "identifier", 0
 };
 #endif
 
@@ -601,21 +608,21 @@ static const yytype_uint16 yytoknum[] =
      265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
      275,   276,   277,   278,   279,   280,   281,   282,   283,   284,
      285,   286,   287,   288,   289,   290,   291,   292,   293,   294,
-     295,   296,   297,   298,   299
+     295,   296,   297,   298,   299,   300,   301
 };
 # endif
 
 /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    45,    46,    47,    47,    48,    48,    49,    49,    50,
-      50,    50,    50,    50,    50,    50,    51,    51,    52,    52,
-      53,    53,    53,    53,    54,    54,    55,    55,    56,    56,
-      57,    57,    58,    58,    59,    59,    60,    60,    61,    61,
-      62,    62,    63,    63,    63,    64,    64,    64,    64,    64,
-      65,    65,    65,    66,    66,    66,    67,    67,    67,    67,
-      68,    68,    68,    69,    69,    69,    69,    69,    69,    69,
-      70
+       0,    47,    48,    49,    49,    50,    50,    51,    51,    52,
+      52,    52,    52,    52,    52,    52,    53,    53,    54,    54,
+      55,    55,    55,    55,    56,    56,    57,    57,    58,    58,
+      59,    59,    60,    60,    61,    61,    62,    62,    63,    63,
+      64,    64,    65,    65,    65,    66,    66,    66,    66,    66,
+      67,    67,    67,    68,    68,    68,    69,    69,    69,    69,
+      70,    70,    70,    70,    70,    70,    70,    70,    70,    71,
+      71,    72,    72,    72,    72,    73
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
@@ -627,8 +634,8 @@ static const yytype_uint8 yyr2[] =
        1,     0,     3,     1,     3,     1,     3,     1,     3,     1,
        3,     1,     3,     3,     1,     3,     3,     3,     3,     1,
        3,     3,     1,     3,     3,     1,     3,     3,     3,     1,
-       2,     2,     1,     3,     1,     1,     1,     1,     2,     2,
-       1
+       2,     2,     2,     2,     2,     2,     2,     2,     1,     3,
+       1,     1,     1,     1,     1,     1
 };
 
 /* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
@@ -637,56 +644,58 @@ static const yytype_uint8 yyr2[] =
 static const yytype_uint8 yydefact[] =
 {
        0,     0,     0,     0,     1,     0,     0,     6,     4,     2,
-      20,    21,    22,    23,     0,     0,     0,    70,    65,    66,
-      67,     0,     0,     0,     0,     0,     0,     0,    11,     0,
-       6,     7,     8,     0,     0,    18,    29,    33,    35,    37,
-      39,    41,    44,    49,    52,    55,    59,    62,    64,     0,
-       0,    31,     0,    69,    68,     0,     0,    60,    61,     3,
-       5,    10,    19,    24,    27,     0,     0,     0,     0,     0,
+      20,    21,    22,    23,     0,     0,     0,    75,    72,    73,
+      74,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+      11,     0,     6,     7,     8,     0,     0,    18,    29,    33,
+      35,    37,    39,    41,    44,    49,    52,    55,    59,    68,
+      70,    71,     0,     0,    31,     0,    61,    60,    62,    63,
+       0,     0,    66,    71,    67,     3,     5,    10,    19,    24,
+      27,     0,     0,     0,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,    30,     0,    63,     0,
-       0,     0,     0,    28,    32,    34,    36,    38,    40,    42,
-      43,    45,    47,    46,    48,    53,    54,    50,    51,    56,
-      57,    58,     0,     0,    31,     0,     0,    25,    26,    16,
-       7,     0,    14,     0,    12,    13,     0,     0,    31,     9,
-      17,     0,     0,     0,     0,     0,    15,     0
+      64,    65,     0,     0,    30,     0,    69,     0,     0,     0,
+       0,    32,    68,    34,    36,    38,    40,    42,    43,    45,
+      47,    46,    48,    53,    54,    50,    51,    56,    57,    58,
+      28,     0,     0,    31,     0,     0,    25,    26,    16,     7,
+       0,    14,     0,    12,    13,     0,     0,    31,     9,    17,
+       0,     0,     0,     0,     0,    15,     0
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     2,    28,    29,    30,    31,    32,    33,    34,    62,
-      63,    35,    87,    36,    37,    38,    39,    40,    41,    42,
-      43,    44,    45,    46,    47,    48
+      -1,     2,    30,    31,    32,    33,    34,    35,    36,    68,
+      69,    37,    95,    38,    39,    40,    41,    42,    43,    44,
+      45,    46,    47,    48,    49,    50,    51
 };
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
-#define YYPACT_NINF -110
+#define YYPACT_NINF -115
 static const yytype_int16 yypact[] =
 {
-      20,    15,    34,    14,  -110,    44,    -6,     3,  -110,  -110,
-    -110,  -110,  -110,  -110,    21,    47,    53,  -110,  -110,  -110,
-    -110,    75,    68,    82,    73,    74,   113,   113,  -110,    77,
-       3,  -110,  -110,    72,   113,  -110,    86,    65,    76,    69,
-      80,    81,     5,   111,    30,  -110,   101,  -110,  -110,    75,
-      79,    79,    93,  -110,  -110,   106,    75,  -110,  -110,  -110,
-    -110,  -110,  -110,   114,   120,    75,    75,    75,    75,    75,
-      75,    75,    75,    75,    75,    75,    75,    75,    75,    75,
-      75,    75,    75,    75,   121,   122,  -110,   118,  -110,   124,
-     125,   113,    75,  -110,  -110,  -110,  -110,  -110,  -110,  -110,
-    -110,  -110,  -110,  -110,  -110,  -110,  -110,  -110,  -110,  -110,
-    -110,  -110,     3,    42,    79,   123,   126,  -110,  -110,  -110,
-     141,   128,  -110,   127,  -110,  -110,     3,    75,    79,  -110,
-    -110,   129,   130,    42,    42,   148,  -110,    42
+      19,    13,    30,    23,  -115,    10,    -8,    83,  -115,  -115,
+    -115,  -115,  -115,  -115,    61,    62,    69,  -115,  -115,  -115,
+    -115,   175,    86,    87,    89,    89,    79,    80,     1,     1,
+    -115,    78,    83,  -115,  -115,    76,    89,  -115,  -115,    66,
+      70,    65,    72,    68,    11,    47,   -11,  -115,    45,    93,
+    -115,     2,   175,   161,   161,    99,  -115,  -115,  -115,  -115,
+      89,   175,  -115,  -115,  -115,  -115,  -115,  -115,  -115,    97,
+     109,   175,   175,   175,   175,   175,   175,   175,   175,   175,
+     175,   175,   175,   175,   175,   175,   175,   175,   175,   175,
+    -115,  -115,   114,   115,  -115,   111,  -115,   117,   118,    89,
+     175,  -115,  -115,  -115,  -115,  -115,  -115,  -115,  -115,  -115,
+    -115,  -115,  -115,  -115,  -115,  -115,  -115,  -115,  -115,  -115,
+    -115,    83,   122,   161,   119,   120,  -115,  -115,  -115,   134,
+     121,  -115,   125,  -115,  -115,    83,   175,   161,  -115,  -115,
+     126,   131,   122,   122,   137,  -115,   122
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int16 yypgoto[] =
 {
-    -110,  -110,   151,   131,    46,   -14,    33,   -49,  -110,    71,
-    -110,   -21,  -109,   -42,    96,    92,    95,    97,   -31,    63,
-     -50,  -110,   -20,  -110,   -23,   110
+    -115,  -115,   149,   129,    41,  -114,    33,   -52,  -115,    71,
+    -115,   -21,  -112,    98,   104,   105,   103,    96,    -7,    -6,
+      -3,  -115,   -44,  -115,   -25,  -115,   -19
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
@@ -696,64 +705,75 @@ static const yytype_int16 yypgoto[] =
 #define YYTABLE_NINF -1
 static const yytype_uint8 yytable[] =
 {
-      52,    85,    86,    57,    58,   123,    10,    11,    12,    13,
-      14,    64,    15,    16,    17,    18,    19,    20,     7,   132,
-      71,    72,     8,     1,    94,    21,     3,     7,    84,   107,
-     108,     8,    22,    23,     4,    90,     5,    24,    25,    26,
-      99,   100,    27,    49,    93,    10,    11,    12,    13,   121,
-     118,    15,    16,    17,    18,    19,    20,   105,   106,    77,
-      78,   109,   110,   111,    21,    86,     7,     6,    64,    50,
-       8,    22,    23,    79,    80,    51,    24,    25,    26,    86,
-      53,    27,    10,    11,    12,    13,    17,    18,    19,    20,
-      17,    18,    19,    20,    54,    55,    56,    21,   120,   122,
-      61,    21,    59,    66,    22,    23,   131,    65,    22,    23,
-      68,    26,   129,    67,    27,    26,    88,    17,    27,   135,
-     136,    70,    69,   129,    17,    18,    19,    20,    73,    74,
-      75,    76,    81,    82,    83,    21,   101,   102,   103,   104,
-      91,    92,    22,    23,   112,   113,   114,   115,   116,   126,
-     127,   124,   133,   134,   125,   128,   137,     9,   119,   130,
-      96,    60,   117,    95,    97,    89,     0,    98
+      55,    93,    94,    62,    64,    58,    59,   129,   131,    63,
+      63,   132,    17,    18,    19,    20,     7,    70,    82,    83,
+       8,   138,     1,    21,     3,   141,    76,    77,   144,   145,
+       4,    92,   138,     6,    84,    85,    90,    91,   113,   114,
+      98,    97,   117,   118,   119,     5,   102,   102,   102,   102,
+     102,   102,   102,   102,   102,   102,   102,   102,   102,   102,
+     102,   102,   102,   102,    78,    79,    80,    81,   120,   107,
+     108,    94,   109,   110,   111,   112,    86,    87,    88,   127,
+      70,   115,   116,    52,    53,    94,    10,    11,    12,    13,
+      14,    54,    15,    16,    17,    18,    19,    20,    56,    57,
+      17,    60,    61,    65,    67,    21,    71,     7,    73,    72,
+      75,     8,    22,    23,    89,   140,    74,    24,    25,    26,
+      27,    28,    96,    99,    29,    10,    11,    12,    13,   130,
+     100,    15,    16,    17,    18,    19,    20,   121,   122,   123,
+     124,   125,   135,   136,    21,   146,     7,   133,   134,   142,
+       8,    22,    23,   137,   143,     9,    24,    25,    26,    27,
+      28,    66,   128,    29,    10,    11,    12,    13,   139,   101,
+     126,   106,    17,    18,    19,    20,   103,   105,   104,     0,
+       0,     0,     0,    21,     0,     0,    17,    18,    19,    20,
+      22,    23,     0,     0,     0,    24,    25,    21,     0,    28,
+       0,     0,    29,     0,    22,    23,     0,     0,     0,    24,
+      25,     0,     0,    28,     0,     0,    29
 };
 
 static const yytype_int16 yycheck[] =
 {
-      21,    50,    51,    26,    27,   114,     3,     4,     5,     6,
-       7,    34,     9,    10,    11,    12,    13,    14,    24,   128,
-      15,    16,    28,     3,    66,    22,    11,    24,    49,    79,
-      80,    28,    29,    30,     0,    56,    22,    34,    35,    36,
-      71,    72,    39,    22,    65,     3,     4,     5,     6,     7,
-      92,     9,    10,    11,    12,    13,    14,    77,    78,    29,
-      30,    81,    82,    83,    22,   114,    24,    23,    91,    22,
-      28,    29,    30,    43,    44,    22,    34,    35,    36,   128,
-      12,    39,     3,     4,     5,     6,    11,    12,    13,    14,
-      11,    12,    13,    14,    12,    22,    22,    22,   112,   113,
-      28,    22,    25,    38,    29,    30,   127,    21,    29,    30,
-      41,    36,   126,    37,    39,    36,    23,    11,    39,   133,
-     134,    40,    42,   137,    11,    12,    13,    14,    17,    18,
-      19,    20,    31,    32,    33,    22,    73,    74,    75,    76,
-      26,    21,    29,    30,    23,    23,    28,    23,    23,     8,
-      22,    28,    23,    23,    28,    28,     8,     6,   112,   126,
-      68,    30,    91,    67,    69,    55,    -1,    70
+      21,    53,    54,    28,    29,    24,    25,   121,   122,    28,
+      29,   123,    11,    12,    13,    14,    24,    36,    29,    30,
+      28,   135,     3,    22,    11,   137,    15,    16,   142,   143,
+       0,    52,   146,    23,    45,    46,    34,    35,    82,    83,
+      61,    60,    86,    87,    88,    22,    71,    72,    73,    74,
+      75,    76,    77,    78,    79,    80,    81,    82,    83,    84,
+      85,    86,    87,    88,    17,    18,    19,    20,    89,    76,
+      77,   123,    78,    79,    80,    81,    31,    32,    33,   100,
+      99,    84,    85,    22,    22,   137,     3,     4,     5,     6,
+       7,    22,     9,    10,    11,    12,    13,    14,    12,    12,
+      11,    22,    22,    25,    28,    22,    40,    24,    43,    39,
+      42,    28,    29,    30,    21,   136,    44,    34,    35,    36,
+      37,    38,    23,    26,    41,     3,     4,     5,     6,     7,
+      21,     9,    10,    11,    12,    13,    14,    23,    23,    28,
+      23,    23,     8,    22,    22,     8,    24,    28,    28,    23,
+      28,    29,    30,    28,    23,     6,    34,    35,    36,    37,
+      38,    32,   121,    41,     3,     4,     5,     6,   135,    71,
+      99,    75,    11,    12,    13,    14,    72,    74,    73,    -1,
+      -1,    -1,    -1,    22,    -1,    -1,    11,    12,    13,    14,
+      29,    30,    -1,    -1,    -1,    34,    35,    22,    -1,    38,
+      -1,    -1,    41,    -1,    29,    30,    -1,    -1,    -1,    34,
+      35,    -1,    -1,    38,    -1,    -1,    41
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
    symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     3,    46,    11,     0,    22,    23,    24,    28,    47,
+       0,     3,    48,    11,     0,    22,    23,    24,    28,    49,
        3,     4,     5,     6,     7,     9,    10,    11,    12,    13,
-      14,    22,    29,    30,    34,    35,    36,    39,    47,    48,
-      49,    50,    51,    52,    53,    56,    58,    59,    60,    61,
-      62,    63,    64,    65,    66,    67,    68,    69,    70,    22,
-      22,    22,    56,    12,    12,    22,    22,    69,    69,    25,
-      48,    28,    54,    55,    69,    21,    38,    37,    41,    42,
-      40,    15,    16,    17,    18,    19,    20,    29,    30,    43,
-      44,    31,    32,    33,    56,    52,    52,    57,    23,    70,
-      56,    26,    21,    56,    58,    59,    60,    61,    62,    63,
-      63,    64,    64,    64,    64,    67,    67,    65,    65,    67,
-      67,    67,    23,    23,    28,    23,    23,    54,    58,    49,
-      50,     7,    50,    57,    28,    28,     8,    22,    28,    50,
-      51,    56,    57,    23,    23,    50,    50,     8
+      14,    22,    29,    30,    34,    35,    36,    37,    38,    41,
+      49,    50,    51,    52,    53,    54,    55,    58,    60,    61,
+      62,    63,    64,    65,    66,    67,    68,    69,    70,    71,
+      72,    73,    22,    22,    22,    58,    12,    12,    73,    73,
+      22,    22,    71,    73,    71,    25,    50,    28,    56,    57,
+      73,    40,    39,    43,    44,    42,    15,    16,    17,    18,
+      19,    20,    29,    30,    45,    46,    31,    32,    33,    21,
+      34,    35,    58,    54,    54,    59,    23,    73,    58,    26,
+      21,    60,    71,    61,    62,    63,    64,    65,    65,    66,
+      66,    66,    66,    69,    69,    67,    67,    69,    69,    69,
+      58,    23,    23,    28,    23,    23,    56,    58,    51,    52,
+       7,    52,    59,    28,    28,     8,    22,    28,    52,    53,
+      58,    59,    23,    23,    52,    52,     8
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -1747,16 +1767,16 @@ yyreduce:
   case 26:
 #line 196 "parser.y"
     { (yyval.expr) = new Node("EXPR", "DECL_ASSIGN");
-                             assert((yyvsp[(1) - (3)].expr)->IsLit == false);
-                             (yyval.expr)->Children.push_back((yyvsp[(1) - (3)].expr));
-                             (yyval.expr)->Children.push_back((yyvsp[(3) - (3)].expr)); ;}
+                               assert((yyvsp[(1) - (3)].expr)->IsLit == false);
+                               (yyval.expr)->Children.push_back((yyvsp[(1) - (3)].expr));
+                               (yyval.expr)->Children.push_back((yyvsp[(3) - (3)].expr)); ;}
     break;
 
   case 27:
 #line 200 "parser.y"
     { assert((yyvsp[(1) - (1)].expr)->IsLit == false);
-                (yyval.expr) = new Node("EXPR", "DECL_ARG");
-                (yyval.expr)->Children.push_back((yyvsp[(1) - (1)].expr)); ;}
+                   (yyval.expr) = new Node("EXPR", "DECL_ARG");
+                   (yyval.expr)->Children.push_back((yyvsp[(1) - (1)].expr)); ;}
     break;
 
   case 28:
@@ -1786,22 +1806,22 @@ yyreduce:
   case 32:
 #line 217 "parser.y"
     { (yyval.expr) = new Node("EXPR", "OR");
-                            assert((yyvsp[(1) - (3)].expr)->type == "int_char" || (yyvsp[(1) - (3)].expr)->type == "double_float");
-                            assert((yyvsp[(3) - (3)].expr)->type == "int_char" || (yyvsp[(3) - (3)].expr)->type == "double_float");
-                            (yyval.expr)->type = "int_char";
-                            if ((yyvsp[(1) - (3)].expr)->IsLit && (yyvsp[(3) - (3)].expr)->IsLit) {
-                              (yyval.expr)->IsLit = true;
-                              if (std::stod((yyvsp[(1) - (3)].expr)->NodeValue) != 0.0 || std::stod((yyvsp[(3) - (3)].expr)->NodeValue) != 0.0) {
-                                (yyval.expr)->NodeValue = "1";
-                              }
-                              else {
-                                (yyval.expr)->NodeValue = "0";
-                              }
-                            } else {
-                              (yyval.expr)->Children.push_back((yyvsp[(1) - (3)].factor));
-                              (yyval.expr)->Children.push_back((yyvsp[(3) - (3)].term));
-                            }
-                          ;}
+                             assert((yyvsp[(1) - (3)].expr)->type == "int_char" || (yyvsp[(1) - (3)].expr)->type == "double_float");
+                             assert((yyvsp[(3) - (3)].expr)->type == "int_char" || (yyvsp[(3) - (3)].expr)->type == "double_float");
+                             (yyval.expr)->type = "int_char";
+                             if ((yyvsp[(1) - (3)].expr)->IsLit && (yyvsp[(3) - (3)].expr)->IsLit) {
+                               (yyval.expr)->IsLit = true;
+                               if (std::stod((yyvsp[(1) - (3)].expr)->NodeValue) != 0.0 || std::stod((yyvsp[(3) - (3)].expr)->NodeValue) != 0.0) {
+                                 (yyval.expr)->NodeValue = "1";
+                               }
+                               else {
+                                 (yyval.expr)->NodeValue = "0";
+                               }
+                             } else {
+                               (yyval.expr)->Children.push_back((yyvsp[(1) - (3)].factor));
+                               (yyval.expr)->Children.push_back((yyvsp[(3) - (3)].term));
+                             }
+                           ;}
     break;
 
   case 33:
@@ -1812,22 +1832,22 @@ yyreduce:
   case 34:
 #line 237 "parser.y"
     { (yyval.expr) = new Node("EXPR", "AND");
-                            assert((yyvsp[(1) - (3)].expr)->type == "int_char" || (yyvsp[(1) - (3)].expr)->type == "double_float");
-                            assert((yyvsp[(3) - (3)].expr)->type == "int_char" || (yyvsp[(3) - (3)].expr)->type == "double_float");
-                            (yyval.expr)->type = "int_char";
-                            if ((yyvsp[(1) - (3)].expr)->IsLit && (yyvsp[(3) - (3)].expr)->IsLit) {
-                              (yyval.expr)->IsLit = true;
-                              if (std::stod((yyvsp[(1) - (3)].expr)->NodeValue) != 0.0 && std::stod((yyvsp[(3) - (3)].expr)->NodeValue) != 0.0) {
-                                (yyval.expr)->NodeValue = "1";
-                              }
-                              else {
-                                (yyval.expr)->NodeValue = "0";
-                              }
-                            } else {
-                              (yyval.expr)->Children.push_back((yyvsp[(1) - (3)].factor));
-                              (yyval.expr)->Children.push_back((yyvsp[(3) - (3)].term));
-                            }
-                          ;}
+                             assert((yyvsp[(1) - (3)].expr)->type == "int_char" || (yyvsp[(1) - (3)].expr)->type == "double_float");
+                             assert((yyvsp[(3) - (3)].expr)->type == "int_char" || (yyvsp[(3) - (3)].expr)->type == "double_float");
+                             (yyval.expr)->type = "int_char";
+                             if ((yyvsp[(1) - (3)].expr)->IsLit && (yyvsp[(3) - (3)].expr)->IsLit) {
+                               (yyval.expr)->IsLit = true;
+                               if (std::stod((yyvsp[(1) - (3)].expr)->NodeValue) != 0.0 && std::stod((yyvsp[(3) - (3)].expr)->NodeValue) != 0.0) {
+                                 (yyval.expr)->NodeValue = "1";
+                               }
+                               else {
+                                 (yyval.expr)->NodeValue = "0";
+                               }
+                             } else {
+                               (yyval.expr)->Children.push_back((yyvsp[(1) - (3)].factor));
+                               (yyval.expr)->Children.push_back((yyvsp[(3) - (3)].term));
+                             }
+                           ;}
     break;
 
   case 35:
@@ -1838,17 +1858,17 @@ yyreduce:
   case 36:
 #line 257 "parser.y"
     { (yyval.expr) = new Node("EXPR", "BOR");
-                            assert((yyvsp[(1) - (3)].expr)->type == "int_char");
-                            assert((yyvsp[(3) - (3)].expr)->type == "int_char");
-                            (yyval.expr)->type = "int_char";
-                            if ((yyvsp[(1) - (3)].expr)->IsLit && (yyvsp[(3) - (3)].expr)->IsLit) {
-                              (yyval.expr)->IsLit = true;
-                              (yyval.expr)->NodeValue = std::to_string(std::stoi((yyvsp[(1) - (3)].expr)->NodeValue) | std::stoi((yyvsp[(3) - (3)].expr)->NodeValue));
-                            } else {
-                              (yyval.expr)->Children.push_back((yyvsp[(1) - (3)].factor));
-                              (yyval.expr)->Children.push_back((yyvsp[(3) - (3)].term));
-                            }
-                          ;}
+                             assert((yyvsp[(1) - (3)].expr)->type == "int_char");
+                             assert((yyvsp[(3) - (3)].expr)->type == "int_char");
+                             (yyval.expr)->type = "int_char";
+                             if ((yyvsp[(1) - (3)].expr)->IsLit && (yyvsp[(3) - (3)].expr)->IsLit) {
+                               (yyval.expr)->IsLit = true;
+                               (yyval.expr)->NodeValue = std::to_string(std::stoi((yyvsp[(1) - (3)].expr)->NodeValue) | std::stoi((yyvsp[(3) - (3)].expr)->NodeValue));
+                             } else {
+                               (yyval.expr)->Children.push_back((yyvsp[(1) - (3)].factor));
+                               (yyval.expr)->Children.push_back((yyvsp[(3) - (3)].term));
+                             }
+                           ;}
     break;
 
   case 37:
@@ -2025,33 +2045,33 @@ yyreduce:
   case 50:
 #line 398 "parser.y"
     { (yyval.expr) = new Node("EXPR", "BLEFT");
-                                assert((yyvsp[(1) - (3)].expr)->type == "int_char");
-                                assert((yyvsp[(3) - (3)].expr)->type == "int_char");
-                                (yyval.expr)->type = "int_char";
-                                if ((yyvsp[(1) - (3)].expr)->IsLit && (yyvsp[(3) - (3)].expr)->IsLit) {
-                                  (yyval.expr)->IsLit = true;
-                                    (yyval.expr)->NodeValue = std::to_string(std::stoi((yyvsp[(1) - (3)].expr)->NodeValue) << std::stoi((yyvsp[(3) - (3)].expr)->NodeValue));
-                                } else {
-                                  (yyval.expr)->Children.push_back((yyvsp[(1) - (3)].factor));
-                                  (yyval.expr)->Children.push_back((yyvsp[(3) - (3)].term));
-                                }
-                              ;}
+                             assert((yyvsp[(1) - (3)].expr)->type == "int_char");
+                             assert((yyvsp[(3) - (3)].expr)->type == "int_char");
+                             (yyval.expr)->type = "int_char";
+                             if ((yyvsp[(1) - (3)].expr)->IsLit && (yyvsp[(3) - (3)].expr)->IsLit) {
+                               (yyval.expr)->IsLit = true;
+                               (yyval.expr)->NodeValue = std::to_string(std::stoi((yyvsp[(1) - (3)].expr)->NodeValue) << std::stoi((yyvsp[(3) - (3)].expr)->NodeValue));
+                             } else {
+                               (yyval.expr)->Children.push_back((yyvsp[(1) - (3)].factor));
+                               (yyval.expr)->Children.push_back((yyvsp[(3) - (3)].term));
+                             }
+                           ;}
     break;
 
   case 51:
 #line 410 "parser.y"
     { (yyval.expr) = new Node("EXPR", "BRIGHT");
-                                 assert((yyvsp[(1) - (3)].expr)->type == "int_char");
-                                 assert((yyvsp[(3) - (3)].expr)->type == "int_char");
-                                 (yyval.expr)->type = "int_char";
-                                 if ((yyvsp[(1) - (3)].expr)->IsLit && (yyvsp[(3) - (3)].expr)->IsLit) {
-                                   (yyval.expr)->IsLit = true;
-                                     (yyval.expr)->NodeValue = std::to_string(std::stoi((yyvsp[(1) - (3)].expr)->NodeValue) >> std::stoi((yyvsp[(3) - (3)].expr)->NodeValue));
-                                 } else {
-                                   (yyval.expr)->Children.push_back((yyvsp[(1) - (3)].factor));
-                                   (yyval.expr)->Children.push_back((yyvsp[(3) - (3)].term));
-                                 }
-                               ;}
+                              assert((yyvsp[(1) - (3)].expr)->type == "int_char");
+                              assert((yyvsp[(3) - (3)].expr)->type == "int_char");
+                              (yyval.expr)->type = "int_char";
+                              if ((yyvsp[(1) - (3)].expr)->IsLit && (yyvsp[(3) - (3)].expr)->IsLit) {
+                                (yyval.expr)->IsLit = true;
+                                (yyval.expr)->NodeValue = std::to_string(std::stoi((yyvsp[(1) - (3)].expr)->NodeValue) >> std::stoi((yyvsp[(3) - (3)].expr)->NodeValue));
+                              } else {
+                                (yyval.expr)->Children.push_back((yyvsp[(1) - (3)].factor));
+                                (yyval.expr)->Children.push_back((yyvsp[(3) - (3)].term));
+                              }
+                            ;}
     break;
 
   case 52:
@@ -2062,39 +2082,39 @@ yyreduce:
   case 53:
 #line 425 "parser.y"
     { (yyval.expr) = new Node("EXPR", "ADD");
-                                 assert((yyvsp[(1) - (3)].expr)->type == "int_char" || (yyvsp[(1) - (3)].expr)->type == "double_float");
-                                 assert((yyvsp[(3) - (3)].expr)->type == "int_char" || (yyvsp[(3) - (3)].expr)->type == "double_float");
-                                 (yyval.expr)->type = MoreAccurate((yyvsp[(1) - (3)].expr)->type, (yyvsp[(3) - (3)].expr)->type);
-                                 if ((yyvsp[(1) - (3)].expr)->IsLit && (yyvsp[(3) - (3)].expr)->IsLit) {
-                                   (yyval.expr)->IsLit = true;
-                                   if ((yyval.expr)->type == "int_char")
-                                     (yyval.expr)->NodeValue = std::to_string(std::stoi((yyvsp[(1) - (3)].expr)->NodeValue) + std::stoi((yyvsp[(3) - (3)].expr)->NodeValue));
-                                   else
-                                     (yyval.expr)->NodeValue = std::to_string(std::stod((yyvsp[(1) - (3)].expr)->NodeValue) + std::stod((yyvsp[(3) - (3)].expr)->NodeValue));
-                                 } else {
-                                   (yyval.expr)->Children.push_back((yyvsp[(1) - (3)].factor));
-                                   (yyval.expr)->Children.push_back((yyvsp[(3) - (3)].term));
-                                 }
-                               ;}
+                            assert((yyvsp[(1) - (3)].expr)->type == "int_char" || (yyvsp[(1) - (3)].expr)->type == "double_float");
+                            assert((yyvsp[(3) - (3)].expr)->type == "int_char" || (yyvsp[(3) - (3)].expr)->type == "double_float");
+                            (yyval.expr)->type = MoreAccurate((yyvsp[(1) - (3)].expr)->type, (yyvsp[(3) - (3)].expr)->type);
+                            if ((yyvsp[(1) - (3)].expr)->IsLit && (yyvsp[(3) - (3)].expr)->IsLit) {
+                              (yyval.expr)->IsLit = true;
+                              if ((yyval.expr)->type == "int_char")
+                                (yyval.expr)->NodeValue = std::to_string(std::stoi((yyvsp[(1) - (3)].expr)->NodeValue) + std::stoi((yyvsp[(3) - (3)].expr)->NodeValue));
+                              else
+                                (yyval.expr)->NodeValue = std::to_string(std::stod((yyvsp[(1) - (3)].expr)->NodeValue) + std::stod((yyvsp[(3) - (3)].expr)->NodeValue));
+                            } else {
+                              (yyval.expr)->Children.push_back((yyvsp[(1) - (3)].factor));
+                              (yyval.expr)->Children.push_back((yyvsp[(3) - (3)].term));
+                            }
+                          ;}
     break;
 
   case 54:
 #line 440 "parser.y"
     { (yyval.expr) = new Node("EXPR", "MINUS");
-                                  assert((yyvsp[(1) - (3)].expr)->type == "int_char" || (yyvsp[(1) - (3)].expr)->type == "double_float");
-                                  assert((yyvsp[(3) - (3)].expr)->type == "int_char" || (yyvsp[(3) - (3)].expr)->type == "double_float");
-                                  (yyval.expr)->type = MoreAccurate((yyvsp[(1) - (3)].expr)->type, (yyvsp[(3) - (3)].expr)->type);
-                                  if ((yyvsp[(1) - (3)].expr)->IsLit && (yyvsp[(3) - (3)].expr)->IsLit) {
-                                    (yyval.expr)->IsLit = true;
-                                    if ((yyval.expr)->type == "int_char")
-                                      (yyval.expr)->NodeValue = std::to_string(std::stoi((yyvsp[(1) - (3)].expr)->NodeValue) - std::stoi((yyvsp[(3) - (3)].expr)->NodeValue));
-                                    else
-                                      (yyval.expr)->NodeValue = std::to_string(std::stod((yyvsp[(1) - (3)].expr)->NodeValue) - std::stod((yyvsp[(3) - (3)].expr)->NodeValue));
-                                  } else {
-                                    (yyval.expr)->Children.push_back((yyvsp[(1) - (3)].factor));
-                                    (yyval.expr)->Children.push_back((yyvsp[(3) - (3)].term));
-                                  }
-                                ;}
+                             assert((yyvsp[(1) - (3)].expr)->type == "int_char" || (yyvsp[(1) - (3)].expr)->type == "double_float");
+                             assert((yyvsp[(3) - (3)].expr)->type == "int_char" || (yyvsp[(3) - (3)].expr)->type == "double_float");
+                             (yyval.expr)->type = MoreAccurate((yyvsp[(1) - (3)].expr)->type, (yyvsp[(3) - (3)].expr)->type);
+                             if ((yyvsp[(1) - (3)].expr)->IsLit && (yyvsp[(3) - (3)].expr)->IsLit) {
+                               (yyval.expr)->IsLit = true;
+                               if ((yyval.expr)->type == "int_char")
+                                 (yyval.expr)->NodeValue = std::to_string(std::stoi((yyvsp[(1) - (3)].expr)->NodeValue) - std::stoi((yyvsp[(3) - (3)].expr)->NodeValue));
+                               else
+                                 (yyval.expr)->NodeValue = std::to_string(std::stod((yyvsp[(1) - (3)].expr)->NodeValue) - std::stod((yyvsp[(3) - (3)].expr)->NodeValue));
+                             } else {
+                               (yyval.expr)->Children.push_back((yyvsp[(1) - (3)].factor));
+                               (yyval.expr)->Children.push_back((yyvsp[(3) - (3)].term));
+                             }
+                           ;}
     break;
 
   case 55:
@@ -2163,92 +2183,117 @@ yyreduce:
 
   case 60:
 #line 503 "parser.y"
-    { (yyval.expr) = new Node("EXPR", "NOT");
-                        assert((yyvsp[(2) - (2)].expr)->type == "int_char" || (yyvsp[(2) - (2)].expr)->type == "double_float");
-                        (yyval.expr)->type = "int_char";
-                        if ((yyvsp[(2) - (2)].expr)->IsLit) {
-                          (yyval.expr)->IsLit = true;
-                          if (std::stod((yyvsp[(2) - (2)].expr)->NodeValue) != 0.0) {
-                            (yyval.expr)->NodeValue = "0";
-                          } else {
-                            (yyval.expr)->NodeValue = "1";
-                          }
-                        } else {
-                          (yyval.expr)->Children.push_back((yyvsp[(2) - (2)].expr));
-                        } ;}
-    break;
-
-  case 61:
-#line 516 "parser.y"
-    { (yyval.expr) = new Node("EXPR", "BNOT");
-                         assert((yyvsp[(2) - (2)].expr)->type == "int_char");
-                         (yyval.expr)->type = "int_char";
-                         if ((yyvsp[(2) - (2)].expr)->IsLit) {
-                           (yyval.expr)->IsLit = true;
-                           (yyval.expr)->NodeValue = std::to_string(~std::stoi((yyvsp[(2) - (2)].expr)->NodeValue));
-                         } else {
-                           (yyval.expr)->Children.push_back((yyvsp[(2) - (2)].expr));
-                         } ;}
-    break;
-
-  case 62:
-#line 525 "parser.y"
-    { (yyval.term) = (yyvsp[(1) - (1)].term); ;}
-    break;
-
-  case 63:
-#line 528 "parser.y"
-    { (yyval.expr) = (yyvsp[(2) - (3)].expr); ;}
-    break;
-
-  case 64:
-#line 529 "parser.y"
-    { (yyval.factor) = (yyvsp[(1) - (1)].expr); ;}
-    break;
-
-  case 65:
-#line 530 "parser.y"
-    { (yyval.factor) = new Node("VAL", (yyvsp[(1) - (1)].str), "", "int_char");
-                    (yyval.expr)->IsLit = true; ;}
-    break;
-
-  case 66:
-#line 532 "parser.y"
-    { (yyval.factor) = new Node("VAL", (yyvsp[(1) - (1)].str), "", "double_float");
-                   (yyval.expr)->IsLit = true; ;}
-    break;
-
-  case 67:
-#line 534 "parser.y"
-    { (yyval.factor) = new Node("VAL", (yyvsp[(1) - (1)].str), "", "int_char");
-                 (yyval.expr)->IsLit = true; ;}
-    break;
-
-  case 68:
-#line 536 "parser.y"
     { (yyval.factor) = new Node("VAL", (yyvsp[(2) - (2)].str), "NEG", "int_char");
-                           (yyval.expr)->IsLit = true; ;}
-    break;
-
-  case 69:
-#line 538 "parser.y"
-    { (yyval.factor) = new Node("VAL", (yyvsp[(2) - (2)].str), "", "int_char");
                           (yyval.expr)->IsLit = true; ;}
     break;
 
+  case 61:
+#line 505 "parser.y"
+    { (yyval.factor) = new Node("VAL", (yyvsp[(2) - (2)].str), "", "int_char");
+                         (yyval.expr)->IsLit = true; ;}
+    break;
+
+  case 62:
+#line 507 "parser.y"
+    {;}
+    break;
+
+  case 63:
+#line 508 "parser.y"
+    {;}
+    break;
+
+  case 64:
+#line 509 "parser.y"
+    {;}
+    break;
+
+  case 65:
+#line 510 "parser.y"
+    {;}
+    break;
+
+  case 66:
+#line 511 "parser.y"
+    { (yyval.expr) = new Node("EXPR", "NOT");
+                     assert((yyvsp[(2) - (2)].expr)->type == "int_char" || (yyvsp[(2) - (2)].expr)->type == "double_float");
+                     (yyval.expr)->type = "int_char";
+                     if ((yyvsp[(2) - (2)].expr)->IsLit) {
+                        (yyval.expr)->IsLit = true;
+                        if (std::stod((yyvsp[(2) - (2)].expr)->NodeValue) != 0.0) {
+                          (yyval.expr)->NodeValue = "0";
+                        } else {
+                          (yyval.expr)->NodeValue = "1";
+                        }
+                     } else {
+                        (yyval.expr)->Children.push_back((yyvsp[(2) - (2)].expr));
+                     } ;}
+    break;
+
+  case 67:
+#line 524 "parser.y"
+    { (yyval.expr) = new Node("EXPR", "BNOT");
+                      assert((yyvsp[(2) - (2)].expr)->type == "int_char");
+                      (yyval.expr)->type = "int_char";
+                      if ((yyvsp[(2) - (2)].expr)->IsLit) {
+                        (yyval.expr)->IsLit = true;
+                        (yyval.expr)->NodeValue = std::to_string(~std::stoi((yyvsp[(2) - (2)].expr)->NodeValue));
+                      } else {
+                        (yyval.expr)->Children.push_back((yyvsp[(2) - (2)].expr));
+                      } ;}
+    break;
+
+  case 68:
+#line 533 "parser.y"
+    { (yyval.term) = (yyvsp[(1) - (1)].term); ;}
+    break;
+
+  case 69:
+#line 536 "parser.y"
+    { (yyval.expr) = (yyvsp[(2) - (3)].expr); ;}
+    break;
+
   case 70:
-#line 542 "parser.y"
+#line 537 "parser.y"
+    { (yyval.factor) = (yyvsp[(1) - (1)].expr); ;}
+    break;
+
+  case 71:
+#line 540 "parser.y"
+    { (yyval.factor) = (yyvsp[(1) - (1)].expr); ;}
+    break;
+
+  case 72:
+#line 541 "parser.y"
+    { (yyval.factor) = new Node("VAL", (yyvsp[(1) - (1)].str), "", "int_char");
+                   (yyval.expr)->IsLit = true; ;}
+    break;
+
+  case 73:
+#line 543 "parser.y"
+    { (yyval.factor) = new Node("VAL", (yyvsp[(1) - (1)].str), "", "double_float");
+                  (yyval.expr)->IsLit = true; ;}
+    break;
+
+  case 74:
+#line 545 "parser.y"
+    { (yyval.factor) = new Node("VAL", (yyvsp[(1) - (1)].str), "", "int_char");
+                (yyval.expr)->IsLit = true; ;}
+    break;
+
+  case 75:
+#line 549 "parser.y"
     { (yyval.identifier) = new Node("VAR", (yyvsp[(1) - (1)].str));
                            std::string var = (yyvsp[(1) - (1)].str);
                            if (IdTable.find(var) != IdTable.end()) {
                              (yyval.identifier)->type = IdTable.find(var)->second;
                            }
-                         ;}
+                          ;}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 2252 "parser.cpp"
+#line 2297 "parser.cpp"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2462,6 +2507,6 @@ yyreturn:
 }
 
 
-#line 550 "parser.y"
+#line 557 "parser.y"
 
 

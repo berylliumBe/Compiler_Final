@@ -70,17 +70,19 @@
      TMUL = 286,
      TDIV = 287,
      TMOD = 288,
-     TREAD = 289,
-     TWRITE = 290,
-     TNOT = 291,
-     TAND = 292,
-     TOR = 293,
-     TBNOT = 294,
-     TBAND = 295,
-     TBOR = 296,
-     TBXOR = 297,
-     TBLEFT = 298,
-     TBRIGHT = 299
+     TSADD = 289,
+     TSMINUS = 290,
+     TREAD = 291,
+     TWRITE = 292,
+     TNOT = 293,
+     TAND = 294,
+     TOR = 295,
+     TBNOT = 296,
+     TBAND = 297,
+     TBOR = 298,
+     TBXOR = 299,
+     TBLEFT = 300,
+     TBRIGHT = 301
    };
 #endif
 /* Tokens.  */
@@ -115,17 +117,19 @@
 #define TMUL 286
 #define TDIV 287
 #define TMOD 288
-#define TREAD 289
-#define TWRITE 290
-#define TNOT 291
-#define TAND 292
-#define TOR 293
-#define TBNOT 294
-#define TBAND 295
-#define TBOR 296
-#define TBXOR 297
-#define TBLEFT 298
-#define TBRIGHT 299
+#define TSADD 289
+#define TSMINUS 290
+#define TREAD 291
+#define TWRITE 292
+#define TNOT 293
+#define TAND 294
+#define TOR 295
+#define TBNOT 296
+#define TBAND 297
+#define TBOR 298
+#define TBXOR 299
+#define TBLEFT 300
+#define TBRIGHT 301
 
 
 
@@ -150,7 +154,7 @@ typedef union YYSTYPE
     char *str;
 }
 /* Line 1529 of yacc.c.  */
-#line 154 "parser.hpp"
+#line 158 "parser.hpp"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

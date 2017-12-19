@@ -68,6 +68,9 @@ write                   return TWRITE;
 "/"                     return TDIV;
 "%"                     return TMOD;
 
+"++"                    return TSADD;
+"--"                    return TSMINUS;
+
 ";"                     return TSEMICOLON;
 
 \n						 		|
