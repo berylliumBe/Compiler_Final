@@ -52,6 +52,7 @@
     Node *expr_alg;
     Node *expr_and_decl;
     Node *identifier;
+    Node *decl;
     char *str;
 }
 
@@ -95,7 +96,10 @@
 
 %%
 
-start : INT TIDENTIFIER TLPAREN TRPAREN comp_stmt { RootNode = $<stmt>5; }
+start : INT TIDENTIFIER TLPAREN TRPAREN comp_stmt {
+                                     $<stmt>$ = new Node("START");
+                                     $<stmt>$->Children.push_back($<stmt>5);
+                                     RootNode = $<stmt>$; }
       ;
 
 comp_stmt : TLBRACE stmts TRBRACE { $<stmt>$ = $<stmt>2; }
@@ -121,8 +125,9 @@ matched_stmt : IF TLPAREN expr TRPAREN matched_stmt ELSE matched_stmt {
                                     $<stmt>$->Children.push_back($<stmt>3);
                                     $<stmt>$->Children.push_back($<stmt>5);
                                     $<stmt>$->Children.push_back($<stmt>7); }
-             | expr_and_decl TSEMICOLON { $<stmt>$ = new Node("STMT", "EXPR");
-                                          $<stmt>$->Children.push_back($<expr>1); }
+             | expr TSEMICOLON { $<stmt>$ = new Node("STMT", "EXPR");
+                                 $<stmt>$->Children.push_back($<expr>1); }
+             | decl TSEMICOLON { $<stmt>$ = $<expr>1; }
              | comp_stmt { $<stmt>$ = $<stmt>1; }
              | TREAD TLPAREN identifier TRPAREN TSEMICOLON {
                                     $<stmt>$ = new Node("STMT", "READ");
@@ -130,7 +135,7 @@ matched_stmt : IF TLPAREN expr TRPAREN matched_stmt ELSE matched_stmt {
              | TWRITE TLPAREN expr TRPAREN TSEMICOLON {
                                     $<stmt>$ = new Node("STMT", "WRITE");
                                     $<stmt>$->Children.push_back($<expr>3); }
-             | WHILE TLPAREN expr_and_decl TRPAREN matched_stmt {
+             | WHILE TLPAREN expr TRPAREN matched_stmt {
                                     $<stmt>$ = new Node("STMT", "WHILE");
                                     $<expr>3->NodeInfo = "CONDITION";
                                     $<stmt>$->Children.push_back($<expr>3);
@@ -164,22 +169,21 @@ open_stmt : IF TLPAREN expr TRPAREN stmt {
                                     $<stmt>$->Children.push_back($<stmt>7); }
           ;
 
-expr_and_decl : expr { $<expr>$ = $<expr>1; }
-              | type args_list { $<expr>$ = new Node("EXPR", "DECL");
-                                 std::string t = GetType($<type>1->NodeValue);
-                                 for (auto arg : $<args_list>2->Children) {
-                                   std::string var = arg->Children[0]->NodeValue;
-                                   if (IdTable.find(var) == IdTable.end()) {
-                                     IdTable[var] = t;
-                                     arg->Children[0]->type = t;
-                                   }
-                                   else {
-                                     std::cout << "Error: Replicated Declaration: " << var << std::endl;
-                                   }
-                                 }
-                                 $<expr>$->Children.push_back($<type>1);
-                                 $<expr>$->Children.push_back($<expr>2); }
-              ;
+decl : type args_list { $<expr>$ = new Node("STMT", "DECL");
+                        std::string t = GetType($<type>1->NodeValue);
+                        for (auto arg : $<args_list>2->Children) {
+                          std::string var = arg->Children[0]->NodeValue;
+                          if (IdTable.find(var) == IdTable.end()) {
+                            IdTable[var] = t;
+                            arg->Children[0]->type = t;
+                          }
+                          else {
+                            std::cout << "Error: Replicated Declaration: " << var << std::endl;
+                          }
+                       }
+                       $<expr>$->Children.push_back($<type>1);
+                       $<expr>$->Children.push_back($<expr>2); }
+     ;
 
 type : INT     { $<type>$ = new Node("TYPE", "int"); }
      | CHAR    { $<type>$ = new Node("TYPE", "char"); }
@@ -213,7 +217,8 @@ expr : expr1 TEQUAL expr { $<expr>$ = new Node("EXPR", "ASSIGN");
      | expr12 { $<expr>$ = $<expr>1; }
      ;
 
-optional_expr : expr_and_decl { $<expr>$ = $<expr>1; }
+optional_expr : expr { $<expr>$ = $<expr>1; }
+              | decl { $<expr>$ = $<expr>1; }
               | /* empty */ { $<expr>$ = new Node("OPTIONAL_EXPR", "EMPTY"); }
               ;
 

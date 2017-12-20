@@ -153,10 +153,11 @@ typedef union YYSTYPE
     Node *expr_alg;
     Node *expr_and_decl;
     Node *identifier;
+    Node *decl;
     char *str;
 }
 /* Line 1529 of yacc.c.  */
-#line 160 "parser.hpp"
+#line 161 "parser.hpp"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
