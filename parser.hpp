@@ -82,7 +82,8 @@
      TBOR = 298,
      TBXOR = 299,
      TBLEFT = 300,
-     TBRIGHT = 301
+     TBRIGHT = 301,
+     TRETURN = 302
    };
 #endif
 /* Tokens.  */
@@ -130,6 +131,7 @@
 #define TBXOR 299
 #define TBLEFT 300
 #define TBRIGHT 301
+#define TRETURN 302
 
 
 
@@ -154,7 +156,7 @@ typedef union YYSTYPE
     char *str;
 }
 /* Line 1529 of yacc.c.  */
-#line 158 "parser.hpp"
+#line 160 "parser.hpp"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

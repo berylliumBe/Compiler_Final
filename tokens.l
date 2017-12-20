@@ -33,6 +33,8 @@ for                     return FOR;
 read                    return TREAD;
 write                   return TWRITE;
 
+return                  return TRETURN;
+
 "!"                     return TNOT;
 "&&"                    return TAND;
 "||"                    return TOR;

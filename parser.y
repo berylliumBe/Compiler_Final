@@ -69,6 +69,7 @@
 %token <token> TNOT TAND TOR
 %token <token> TBNOT TBAND TBOR TBXOR
 %token <token> TBLEFT TBRIGHT
+%token <token> TRETURN
 
 /* Define the type of node our nonterminal symbols represent.
    The types refer to the %union declaration above. Ex: when
@@ -143,6 +144,8 @@ matched_stmt : IF TLPAREN expr TRPAREN matched_stmt ELSE matched_stmt {
                                     $<stmt>$->Children.push_back($<expr>5);
                                     $<stmt>$->Children.push_back($<expr>7);
                                     $<stmt>$->Children.push_back($<stmt>9); }
+             | TRETURN expr TSEMICOLON{ $<stmt>$ = new Node("STMT", "RET");
+                              $<stmt>$->Children.push_back($<expr>2); }
              ;
 
 open_stmt : IF TLPAREN expr TRPAREN stmt {
@@ -504,10 +507,22 @@ expr2 : TMINUS TINTEGER { $<factor>$ = new Node("VAL", $2, "NEG", "int_char");
                           $<expr>$->IsLit = true; }
       | TPLUS TINTEGER { $<factor>$ = new Node("VAL", $2, "", "int_char");
                          $<expr>$->IsLit = true; }
-      | TSADD identifier {}
-      | TSMINUS identifier {}
-      | identifier TSADD {}
-      | identifier TSMINUS {}
+      | TSADD identifier { $<expr>$ = new Node("EXPR", "PRSADD");
+                           assert($<expr>2->type == "int_char");
+                           $<expr>$->type = "int_char";
+                           $<expr>$->Children.push_back($<expr>2); }
+      | TSMINUS identifier { $<expr>$ = new Node("EXPR", "PRSMINUS");
+                             assert($<expr>2->type == "int_char");
+                             $<expr>$->type = "int_char";
+                             $<expr>$->Children.push_back($<expr>2); }
+      | identifier TSADD { $<expr>$ = new Node("EXPR", "SUSADD");
+                           assert($<expr>2->type == "int_char");
+                           $<expr>$->type = "int_char";
+                           $<expr>$->Children.push_back($<expr>2); }
+      | identifier TSMINUS { $<expr>$ = new Node("EXPR", "SUSMINUS");
+                             assert($<expr>2->type == "int_char");
+                             $<expr>$->type = "int_char";
+                             $<expr>$->Children.push_back($<expr>2); }
       | TNOT expr1 { $<expr>$ = new Node("EXPR", "NOT");
                      assert($<expr>2->type == "int_char" || $<expr>2->type == "double_float");
                      $<expr>$->type = "int_char";
