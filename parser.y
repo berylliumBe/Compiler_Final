@@ -521,13 +521,13 @@ expr2 : TMINUS TINTEGER { $<factor>$ = new Node("VAL", $2, "NEG", "int_char");
                              $<expr>$->type = "int_char";
                              $<expr>$->Children.push_back($<expr>2); }
       | identifier TSADD { $<expr>$ = new Node("EXPR", "SUSADD");
-                           assert($<expr>2->type == "int_char");
+                           assert($<expr>1->type == "int_char");
                            $<expr>$->type = "int_char";
-                           $<expr>$->Children.push_back($<expr>2); }
+                           $<expr>$->Children.push_back($<expr>1); }
       | identifier TSMINUS { $<expr>$ = new Node("EXPR", "SUSMINUS");
-                             assert($<expr>2->type == "int_char");
+                             assert($<expr>1->type == "int_char");
                              $<expr>$->type = "int_char";
-                             $<expr>$->Children.push_back($<expr>2); }
+                             $<expr>$->Children.push_back($<expr>1); }
       | TNOT expr1 { $<expr>$ = new Node("EXPR", "NOT");
                      assert($<expr>2->type == "int_char" || $<expr>2->type == "double_float");
                      $<expr>$->type = "int_char";

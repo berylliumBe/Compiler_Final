@@ -3,8 +3,9 @@ int main()
 {
     int t,num=0;
     read(t);
-    while (t--)
-    {
+    //while (t--)
+
+    //{
         int n;
         read(n);
         if (n<2)
@@ -23,8 +24,9 @@ int main()
                         write(0);
                     }
         }
-    }
-    int n=num;
+  //  }
+/*    int n=num;
     write(n);
     return 0;
+*/
 }

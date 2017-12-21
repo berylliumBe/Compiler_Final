@@ -11,6 +11,7 @@ extern Node* RootNode;
 extern int yyparse();
 
 int rn = 0;
+int Ln = 0;
 
 bool IsBinaryOperation(string NodeValue) {
   if (NodeValue == "MUL" || NodeValue == "DIV" || NodeValue == "MOD" ||
@@ -50,6 +51,15 @@ bool IsSufUnaryOperation(string NodeValue) {
   }
 }
 
+bool IsAssign(string NodeValue) {
+  if (NodeValue == "ASSIGN" || NodeValue == "DECL_ASSIGN") {
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
 string ThreeAddressCodeGen(Node* r) {
 
   string NodeType = r->NodeType;
@@ -65,54 +75,125 @@ string ThreeAddressCodeGen(Node* r) {
     return NodeValue;
   }
   else if (NodeType == "EXPR") {
+    string res = "";
     if (IsBinaryOperation(NodeValue)) {
       string arg1 = ThreeAddressCodeGen(Children[0]);
       string arg2 = ThreeAddressCodeGen(Children[1]);
       rn++;
-      string res = "r" + to_string(rn);
-      cout << res << " = " << arg1 << " " << NodeValue << " " << arg2 << endl;
-      // cout << NodeValue << "\t" << arg1 << "\t" << arg2 << "\t" << res << endl;
-      return res;
+      res = "_r" + to_string(rn);
+      cout << "  " << res << " = " << arg1 << " " << NodeValue << " " << arg2 << endl;
     }
     else if (IsPreUnaryOperation(NodeValue)) {
       string arg1 = ThreeAddressCodeGen(Children[0]);
       rn++;
-      string res = "r" + to_string(rn);
-      cout << res << " = " << NodeValue << " " << arg1 << endl;
-      return res;
+      res = "_r" + to_string(rn); // TODO(yuxifeng): extensible design for ++/--.
+      cout << "  " << res << " = " << NodeValue << " " << arg1 << endl;
     }
+    else if (IsSufUnaryOperation(NodeValue)) {
+      string arg1 = ThreeAddressCodeGen(Children[0]);
+      rn++;
+      res = "_r" + to_string(rn);
+      cout << "  " << res << " = " << arg1 << " " << NodeValue << endl;
+    }
+    else if (IsAssign(NodeValue)) {
+      string arg1 = ThreeAddressCodeGen(Children[0]);
+      string arg2 = ThreeAddressCodeGen(Children[1]);
+      res = arg1;
+      cout << "  " << res << " = " << arg2 << endl;
+    }
+    return res;
   }
   else if (NodeType == "STMT") {
     if (NodeValue == "IF") {
+      Node* expr = Children[0];
+      string cond = ThreeAddressCodeGen(expr);
+      Ln++;
+      string FalseBranchLabel = "_L" + to_string(Ln);
+      Ln++;
+      string EndIfLabel = "_L" + to_string(Ln);
 
+      cout << "  IfZ " << cond << " Goto " << FalseBranchLabel << endl;
+      Node* stmts_iftrue = Children[1];
+      ThreeAddressCodeGen(stmts_iftrue);
+      cout << "  Goto " << EndIfLabel << endl;
+
+      cout << FalseBranchLabel << ":" << endl;
+      if (Children.size() == 3) {
+        Node* stmts_else = Children[2];
+        ThreeAddressCodeGen(stmts_else);
+      }
+
+      cout << EndIfLabel << ":" << endl;
+      return "";
     }
     else if (NodeValue == "FOR") {
+      Node* first_start = Children[0];
+      Node* second_condition = Children[1];
+      Node* third_action = Children[2];
+      Node* stmts = Children[3];
 
+      Ln++;
+      string ForBlockLabel = "_L" + to_string(Ln);
+      Ln++;
+      string EndForLabel = "_L" + to_string(Ln);
+
+      ThreeAddressCodeGen(first_start);
+      cout << ForBlockLabel << ":" << endl;
+      string cond = ThreeAddressCodeGen(second_condition);
+      cout << "  IfZ " << cond << " Goto " << EndForLabel << endl;
+      ThreeAddressCodeGen(stmts);
+      ThreeAddressCodeGen(third_action);
+      cout << "  Goto " << ForBlockLabel << endl;
+      cout << EndForLabel << ":" << endl;
+      return "";
     }
     else if (NodeValue == "WHILE") {
+      Ln++;
+      string WhileBlockLabel = "_L" + to_string(Ln);
+      Ln++;
+      string EndWhileLabel = "_L" + to_string(Ln);
 
+      Node* condition = Children[0];
+      Node* stmts = Children[1];
+
+      cout << WhileBlockLabel << ":" << endl;
+      string cond = ThreeAddressCodeGen(condition);
+      cout << "  IfZ " << cond << " Goto " << EndWhileLabel << endl;
+      ThreeAddressCodeGen(stmts);
+      cout << "  Goto " << WhileBlockLabel << endl;
+      cout << EndWhileLabel << ":" << endl;
+      return "";
     }
     else if (NodeValue == "RET") {
       return "";
     }
     else if (NodeValue == "READ") {
       string res = Children[0]->NodeValue;
-      cout << res + " = _ReadInteger" << endl;
+      cout << "  " << res + " = _ReadInteger" << endl;
       return res;
     }
     else if (NodeValue == "WRITE") {
       string arg1 = ThreeAddressCodeGen(Children[0]);
-      cout << "PushParam " << arg1 << endl;
-      cout << "LCall _PrintInt" << endl;
-      cout << "PopParams 4" << endl;
+      cout << "  PushParam " << arg1 << endl;
+      cout << "  LCall _PrintInt" << endl;
+      cout << "  PopParams 4" << endl;
       return "";
     }
     else if (NodeValue == "EXPR") {
-
-    }
-    else if (NodeValue == "DECL") {
+      ThreeAddressCodeGen(Children[0]);
       return "";
     }
+    else if (NodeValue == "DECL") {
+      Node* ArgsList = Children[1];
+      ThreeAddressCodeGen(ArgsList);
+      return "";
+    }
+  }
+  else if (NodeType == "ARGS_LIST") {
+    for (auto c : Children) {
+      ThreeAddressCodeGen(c);
+    }
+    return "";
   }
   else if (NodeType == "COMP_STMT") {
     for (auto c : Children) {

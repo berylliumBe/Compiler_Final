@@ -1,6 +1,6 @@
 int main()
 {
-/*	int a = 1, b = a, _ = 0, _1, _2, _3;
+	int a = 1, b = a, _ = 0, _1, _2, _3;
 	int (d) = (1), e = (1), (f) = d; // May Be tolerated at first time if ...
 	int c = (a+b);
 	c = _ + c * c - c / c;
@@ -20,5 +20,5 @@ int main()
 	read(x6);
 	c=x1|x2^x3+x4/x5&x6;
 	write(c);
-*/
+
 }

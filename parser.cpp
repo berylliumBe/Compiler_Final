@@ -2233,17 +2233,17 @@ yyreduce:
   case 66:
 #line 523 "parser.y"
     { (yyval.expr) = new Node("EXPR", "SUSADD");
-                           assert((yyvsp[(2) - (2)].expr)->type == "int_char");
+                           assert((yyvsp[(1) - (2)].expr)->type == "int_char");
                            (yyval.expr)->type = "int_char";
-                           (yyval.expr)->Children.push_back((yyvsp[(2) - (2)].expr)); ;}
+                           (yyval.expr)->Children.push_back((yyvsp[(1) - (2)].expr)); ;}
     break;
 
   case 67:
 #line 527 "parser.y"
     { (yyval.expr) = new Node("EXPR", "SUSMINUS");
-                             assert((yyvsp[(2) - (2)].expr)->type == "int_char");
+                             assert((yyvsp[(1) - (2)].expr)->type == "int_char");
                              (yyval.expr)->type = "int_char";
-                             (yyval.expr)->Children.push_back((yyvsp[(2) - (2)].expr)); ;}
+                             (yyval.expr)->Children.push_back((yyvsp[(1) - (2)].expr)); ;}
     break;
 
   case 68:
