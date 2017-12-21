@@ -7,6 +7,7 @@
 ```$./parser < input_file_path```
 
 The output Abstract Syntax Tree can be found at `ast.txt`.
+
 The output Three Address Code can be found at `tac.txt`.
 
 ### TODO List
