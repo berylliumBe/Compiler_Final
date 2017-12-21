@@ -96,10 +96,18 @@ string ThreeAddressCodeGen(Node* r) {
       cout << "  " << res << " = " << arg1 << " " << NodeValue << endl;
     }
     else if (IsAssign(NodeValue)) {
-      string arg1 = ThreeAddressCodeGen(Children[0]);
+      res = ThreeAddressCodeGen(Children[0]);
       string arg2 = ThreeAddressCodeGen(Children[1]);
-      res = arg1;
-      cout << "  " << res << " = " << arg2 << endl;
+
+      string op = NodeInfo;
+      if (op != "") {
+        rn++;
+        string reg = "_r" + to_string(rn);
+        cout << "  " << reg << " = " << res << " " << op << " " << arg2 << endl;
+        cout << "  " << res << " = " << reg << endl;
+      } else {
+        cout << "  " << res << " = " << arg2 << endl;
+      }
     }
     return res;
   }

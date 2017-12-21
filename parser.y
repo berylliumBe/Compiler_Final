@@ -90,7 +90,10 @@
 %left TBAND TBOR TBXOR
 %left TCEQ TCNE
 %left TBLEFT TBRIGHT
-%right TEQUAL
+%right TEQUAL TADDASS TMINASS
+%right TMULASS TDIVASS TMODASS
+%right TBANDASS TBXORASS TBORASS
+%right TBLEFTASS TBRIGHTASS
 
 %start start
 
@@ -217,6 +220,56 @@ expr : expr1 TEQUAL expr { $<expr>$ = new Node("EXPR", "ASSIGN");
                             $<expr>$->Children.push_back($<expr>3);
                             assert($<expr>1->IsLit == false);
                           }
+     | expr1 TADDASS expr { $<expr>$ = new Node("EXPR", "ASSIGN", "ADD");
+                            $<expr>$->Children.push_back($<expr>1);
+                            $<expr>$->Children.push_back($<expr>3);
+                            assert($<expr>1->IsLit == false);
+                          }
+     | expr1 TMINASS expr { $<expr>$ = new Node("EXPR", "ASSIGN", "MIN");
+                            $<expr>$->Children.push_back($<expr>1);
+                            $<expr>$->Children.push_back($<expr>3);
+                            assert($<expr>1->IsLit == false);
+                          }
+     | expr1 TMULASS expr { $<expr>$ = new Node("EXPR", "ASSIGN", "MUL");
+                            $<expr>$->Children.push_back($<expr>1);
+                            $<expr>$->Children.push_back($<expr>3);
+                            assert($<expr>1->IsLit == false);
+                          }
+     | expr1 TDIVASS expr { $<expr>$ = new Node("EXPR", "ASSIGN", "DIV");
+                            $<expr>$->Children.push_back($<expr>1);
+                            $<expr>$->Children.push_back($<expr>3);
+                            assert($<expr>1->IsLit == false);
+                          }
+     | expr1 TMODASS expr { $<expr>$ = new Node("EXPR", "ASSIGN", "MOD");
+                            $<expr>$->Children.push_back($<expr>1);
+                            $<expr>$->Children.push_back($<expr>3);
+                            assert($<expr>1->IsLit == false);
+                          }
+     | expr1 TBANDASS expr { $<expr>$ = new Node("EXPR", "ASSIGN", "BAND");
+                             $<expr>$->Children.push_back($<expr>1);
+                             $<expr>$->Children.push_back($<expr>3);
+                             assert($<expr>1->IsLit == false);
+                           }
+     | expr1 TBXORASS expr { $<expr>$ = new Node("EXPR", "ASSIGN", "BXOR");
+                             $<expr>$->Children.push_back($<expr>1);
+                             $<expr>$->Children.push_back($<expr>3);
+                             assert($<expr>1->IsLit == false);
+                           }
+     | expr1 TBORASS expr { $<expr>$ = new Node("EXPR", "ASSIGN", "BOR");
+                             $<expr>$->Children.push_back($<expr>1);
+                             $<expr>$->Children.push_back($<expr>3);
+                             assert($<expr>1->IsLit == false);
+                           }
+     | expr1 TBLEFTASS expr { $<expr>$ = new Node("EXPR", "ASSIGN", "BLEFT");
+                             $<expr>$->Children.push_back($<expr>1);
+                             $<expr>$->Children.push_back($<expr>3);
+                             assert($<expr>1->IsLit == false);
+                           }
+     | expr1 TBRIGHTASS expr { $<expr>$ = new Node("EXPR", "ASSIGN", "BRIGHT");
+                             $<expr>$->Children.push_back($<expr>1);
+                             $<expr>$->Children.push_back($<expr>3);
+                             assert($<expr>1->IsLit == false);
+                           }
      | expr12 { $<expr>$ = $<expr>1; }
      ;
 

@@ -83,7 +83,17 @@
      TBXOR = 299,
      TBLEFT = 300,
      TBRIGHT = 301,
-     TRETURN = 302
+     TRETURN = 302,
+     TMINASS = 303,
+     TADDASS = 304,
+     TMODASS = 305,
+     TDIVASS = 306,
+     TMULASS = 307,
+     TBORASS = 308,
+     TBXORASS = 309,
+     TBANDASS = 310,
+     TBRIGHTASS = 311,
+     TBLEFTASS = 312
    };
 #endif
 /* Tokens.  */
@@ -132,6 +142,16 @@
 #define TBLEFT 300
 #define TBRIGHT 301
 #define TRETURN 302
+#define TMINASS 303
+#define TADDASS 304
+#define TMODASS 305
+#define TDIVASS 306
+#define TMULASS 307
+#define TBORASS 308
+#define TBXORASS 309
+#define TBANDASS 310
+#define TBRIGHTASS 311
+#define TBLEFTASS 312
 
 
 
@@ -157,7 +177,7 @@ typedef union YYSTYPE
     char *str;
 }
 /* Line 1529 of yacc.c.  */
-#line 161 "parser.hpp"
+#line 181 "parser.hpp"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
