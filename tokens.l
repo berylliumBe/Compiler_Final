@@ -26,6 +26,8 @@ int                     return INT;
 char                    return CHAR;
 float                   return FLOAT;
 double                  return DOUBLE;
+long                    ;
+
 if                      return IF;
 else                    return ELSE;
 while                   return WHILE;
