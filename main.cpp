@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <assert.h>
+#include <fstream>
 #include "node.h"
 
 using namespace std;
@@ -12,6 +13,8 @@ extern int yyparse();
 
 int rn = 0;
 int Ln = 0;
+ofstream tacout;
+ofstream astout;
 
 bool IsBinaryOperation(string NodeValue) {
   if (NodeValue == "MUL" || NodeValue == "DIV" || NodeValue == "MOD" ||
@@ -81,19 +84,19 @@ string ThreeAddressCodeGen(Node* r) {
       string arg2 = ThreeAddressCodeGen(Children[1]);
       rn++;
       res = "_r" + to_string(rn);
-      cout << "  " << res << " = " << arg1 << " " << NodeValue << " " << arg2 << endl;
+      tacout << "  " << res << " = " << arg1 << " " << NodeValue << " " << arg2 << endl;
     }
     else if (IsPreUnaryOperation(NodeValue)) {
       string arg1 = ThreeAddressCodeGen(Children[0]);
       rn++;
       res = "_r" + to_string(rn); // TODO(yuxifeng): extensible design for ++/--.
-      cout << "  " << res << " = " << NodeValue << " " << arg1 << endl;
+      tacout << "  " << res << " = " << NodeValue << " " << arg1 << endl;
     }
     else if (IsSufUnaryOperation(NodeValue)) {
       string arg1 = ThreeAddressCodeGen(Children[0]);
       rn++;
       res = "_r" + to_string(rn);
-      cout << "  " << res << " = " << arg1 << " " << NodeValue << endl;
+      tacout << "  " << res << " = " << arg1 << " " << NodeValue << endl;
     }
     else if (IsAssign(NodeValue)) {
       res = ThreeAddressCodeGen(Children[0]);
@@ -103,10 +106,10 @@ string ThreeAddressCodeGen(Node* r) {
       if (op != "") {
         rn++;
         string reg = "_r" + to_string(rn);
-        cout << "  " << reg << " = " << res << " " << op << " " << arg2 << endl;
-        cout << "  " << res << " = " << reg << endl;
+        tacout << "  " << reg << " = " << res << " " << op << " " << arg2 << endl;
+        tacout << "  " << res << " = " << reg << endl;
       } else {
-        cout << "  " << res << " = " << arg2 << endl;
+        tacout << "  " << res << " = " << arg2 << endl;
       }
     }
     return res;
@@ -120,18 +123,18 @@ string ThreeAddressCodeGen(Node* r) {
       Ln++;
       string EndIfLabel = "_L" + to_string(Ln);
 
-      cout << "  IfZ " << cond << " Goto " << FalseBranchLabel << endl;
+      tacout << "  IfZ " << cond << " Goto " << FalseBranchLabel << endl;
       Node* stmts_iftrue = Children[1];
       ThreeAddressCodeGen(stmts_iftrue);
-      cout << "  Goto " << EndIfLabel << endl;
+      tacout << "  Goto " << EndIfLabel << endl;
 
-      cout << FalseBranchLabel << ":" << endl;
+      tacout << FalseBranchLabel << ":" << endl;
       if (Children.size() == 3) {
         Node* stmts_else = Children[2];
         ThreeAddressCodeGen(stmts_else);
       }
 
-      cout << EndIfLabel << ":" << endl;
+      tacout << EndIfLabel << ":" << endl;
       return "";
     }
     else if (NodeValue == "FOR") {
@@ -146,13 +149,13 @@ string ThreeAddressCodeGen(Node* r) {
       string EndForLabel = "_L" + to_string(Ln);
 
       ThreeAddressCodeGen(first_start);
-      cout << ForBlockLabel << ":" << endl;
+      tacout << ForBlockLabel << ":" << endl;
       string cond = ThreeAddressCodeGen(second_condition);
-      cout << "  IfZ " << cond << " Goto " << EndForLabel << endl;
+      tacout << "  IfZ " << cond << " Goto " << EndForLabel << endl;
       ThreeAddressCodeGen(stmts);
       ThreeAddressCodeGen(third_action);
-      cout << "  Goto " << ForBlockLabel << endl;
-      cout << EndForLabel << ":" << endl;
+      tacout << "  Goto " << ForBlockLabel << endl;
+      tacout << EndForLabel << ":" << endl;
       return "";
     }
     else if (NodeValue == "WHILE") {
@@ -164,12 +167,12 @@ string ThreeAddressCodeGen(Node* r) {
       Node* condition = Children[0];
       Node* stmts = Children[1];
 
-      cout << WhileBlockLabel << ":" << endl;
+      tacout << WhileBlockLabel << ":" << endl;
       string cond = ThreeAddressCodeGen(condition);
-      cout << "  IfZ " << cond << " Goto " << EndWhileLabel << endl;
+      tacout << "  IfZ " << cond << " Goto " << EndWhileLabel << endl;
       ThreeAddressCodeGen(stmts);
-      cout << "  Goto " << WhileBlockLabel << endl;
-      cout << EndWhileLabel << ":" << endl;
+      tacout << "  Goto " << WhileBlockLabel << endl;
+      tacout << EndWhileLabel << ":" << endl;
       return "";
     }
     else if (NodeValue == "RET") {
@@ -177,14 +180,14 @@ string ThreeAddressCodeGen(Node* r) {
     }
     else if (NodeValue == "READ") {
       string res = Children[0]->NodeValue;
-      cout << "  " << res + " = _ReadInteger" << endl;
+      tacout << "  " << res + " = _ReadInteger" << endl;
       return res;
     }
     else if (NodeValue == "WRITE") {
       string arg1 = ThreeAddressCodeGen(Children[0]);
-      cout << "  PushParam " << arg1 << endl;
-      cout << "  LCall _PrintInt" << endl;
-      cout << "  PopParams 4" << endl;
+      tacout << "  PushParam " << arg1 << endl;
+      tacout << "  LCall _PrintInt" << endl;
+      tacout << "  PopParams 4" << endl;
       return "";
     }
     else if (NodeValue == "EXPR") {
@@ -210,7 +213,7 @@ string ThreeAddressCodeGen(Node* r) {
     return "";
   }
   else if (NodeType == "START") {
-    cout << "start:" << endl;
+    tacout << "start:" << endl;
     for (auto c : Children) {
       ThreeAddressCodeGen(c);
     }
@@ -220,11 +223,11 @@ string ThreeAddressCodeGen(Node* r) {
 
 void DfsOutput(Node* r, int nSpace) {
   for (int i = 0; i < nSpace; i++) {
-    cout << " ";
+    astout << " ";
   }
 
-  cout << r->NodeType << "\t" << r->NodeValue << "\t" << r->NodeInfo;
-  cout << "\t" << "type:" << r->type << endl;
+  astout << r->NodeType << "\t" << r->NodeValue << "\t" << r->NodeInfo;
+  astout << "\t" << "type:" << r->type << endl;
 
   nSpace += 4;
   int NumChil = r->Children.size();
@@ -235,8 +238,14 @@ void DfsOutput(Node* r, int nSpace) {
 
 int main(int argc, char **argv)
 {
+    tacout.open("tac.txt");
+    astout.open("ast.txt");
+
     yyparse();
     DfsOutput(RootNode, 0);
     ThreeAddressCodeGen(RootNode);
+
+    tacout.close();
+    astout.close();
     return 0;
 }
