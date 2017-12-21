@@ -79,7 +79,7 @@
  */
 %type <expr> expr0 expr1 expr2 expr3 expr4 expr5 expr6 expr7 expr8 expr9 expr10 expr11 expr12 optional_expr
 //%type <block> program stmts block
-%type <stmt> stmt matched_stmt open_stmt
+%type <stmt> stmt matched_stmt open_stmt decl_stmt
 //%type <token> comparison
 
 
@@ -127,7 +127,7 @@ matched_stmt : IF TLPAREN expr TRPAREN matched_stmt ELSE matched_stmt {
                                     $<stmt>$->Children.push_back($<stmt>7); }
              | expr TSEMICOLON { $<stmt>$ = new Node("STMT", "EXPR");
                                  $<stmt>$->Children.push_back($<expr>1); }
-             | decl TSEMICOLON { $<stmt>$ = $<expr>1; }
+             | decl_stmt { $<stmt>$ = $<expr>1; }
              | comp_stmt { $<stmt>$ = $<stmt>1; }
              | TREAD TLPAREN identifier TRPAREN TSEMICOLON {
                                     $<stmt>$ = new Node("STMT", "READ");
@@ -140,7 +140,7 @@ matched_stmt : IF TLPAREN expr TRPAREN matched_stmt ELSE matched_stmt {
                                     $<expr>3->NodeInfo = "CONDITION";
                                     $<stmt>$->Children.push_back($<expr>3);
                                     $<stmt>$->Children.push_back($<stmt>5); }
-             | FOR TLPAREN optional_expr TSEMICOLON optional_expr TSEMICOLON optional_expr TRPAREN matched_stmt {
+             | FOR TLPAREN optional_expr TSEMICOLON optional_expr TSEMICOLON optional_expr TRPAREN stmt {
                                     $<stmt>$ = new Node("STMT", "FOR");
                                     $<expr>3->NodeInfo = "START";
                                     $<expr>5->NodeInfo = "CONDITION";
@@ -167,6 +167,9 @@ open_stmt : IF TLPAREN expr TRPAREN stmt {
                                     $<stmt>$->Children.push_back($<stmt>3);
                                     $<stmt>$->Children.push_back($<stmt>5);
                                     $<stmt>$->Children.push_back($<stmt>7); }
+          ;
+
+decl_stmt : decl TSEMICOLON { $<expr>$ = $<expr>1; }
           ;
 
 decl : type args_list { $<expr>$ = new Node("STMT", "DECL");

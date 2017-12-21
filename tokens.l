@@ -5,7 +5,7 @@
 extern "C" int yywrap() { }
 %}
 
-ws								[ \f\v\t]
+ws								[ \f\v\t\n\r]
 digit							[0-9]
 hex								[0-9A-Fa-f]
 letter							[A-Z_a-z]
@@ -83,6 +83,8 @@ return                  return TRETURN;
 '(\\)?.?'                    yylval.str = yytext; return TCHAR;
 [/][*](.|\n)*[*][/]     /* Skip multi-line comments. */;
 \/\/.*                  /* Skip single-line comments. */;
+#(.)*                   /* Skip # headers. */;
+using(.)*               /* Skip. */;
 
 
 .                       printf("Unknown token!\n"); yyterminate();

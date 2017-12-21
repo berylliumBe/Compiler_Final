@@ -8,7 +8,8 @@ int main()
         {
             double xx=i*1.0/n;
             double yy=j*1.0/n;
-            if (xx*xx+yy*yy<1) num++;
+            if (xx*xx+yy*yy<1) {num++;}
+            else {num--;}
             times++;
         }
     double ans=num*1.0/times*4;

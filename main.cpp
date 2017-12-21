@@ -203,7 +203,9 @@ string ThreeAddressCodeGen(Node* r) {
   }
   else if (NodeType == "START") {
     cout << "start:" << endl;
-    ThreeAddressCodeGen(Children[0]);
+    for (auto c : Children) {
+      ThreeAddressCodeGen(c);
+    }
     return "";
   }
 }
