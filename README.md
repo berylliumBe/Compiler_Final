@@ -15,7 +15,8 @@ The output cpp program is `program.cpp`.
 Run it with
 
 ```$g++ program.cpp
-   $./a.out```
+   $./a.out
+   ```
 
 ### TODO List
 
