@@ -1,22 +1,113 @@
 start:
-  log = _ReadChar
-  num = 0
-  i = 0
+  t = _ReadInteger
 _L1:
-  _r1 = i COMP_LT 8
+  _r1 = t SUSMINUS
   IfZ _r1 Goto _L2
-  _r2 = log BRIGHT i
-  val = _r2
-  _r3 = val BAND 0x01
-  val = _r3
-  IfZ val Goto _L3
-  _r4 = num SUSADD
-  Goto _L4
+  n = _ReadInteger
+  x1 = _ReadDouble
+  y1 = _ReadDouble
+  x2 = _ReadDouble
+  y2 = _ReadDouble
+  x3 = _ReadDouble
+  y3 = _ReadDouble
 _L3:
+  _r2 = n SUSMINUS
+  IfZ _r2 Goto _L4
+  _r3 = x2 ADD x3
+  _r4 = _r3 DIV 2
+  _r5 = _r4 MINUS x1
+  _r6 = _r5 DIV 3
+  _r7 = _r6 ADD x1
+  xx1 = _r7
+  _r8 = y2 ADD y3
+  _r9 = _r8 DIV 2
+  _r10 = _r9 MINUS y1
+  _r11 = _r10 DIV 3
+  _r12 = _r11 ADD y1
+  yy1 = _r12
+  _r13 = x1 ADD x3
+  _r14 = _r13 DIV 2
+  _r15 = _r14 MINUS x2
+  _r16 = _r15 DIV 3
+  _r17 = _r16 ADD x2
+  xx2 = _r17
+  _r18 = y1 ADD y3
+  _r19 = _r18 DIV 2
+  _r20 = _r19 MINUS y2
+  _r21 = _r20 DIV 3
+  _r22 = _r21 ADD y2
+  yy2 = _r22
+  _r23 = x1 ADD x2
+  _r24 = _r23 DIV 2
+  _r25 = _r24 MINUS x3
+  _r26 = _r25 DIV 3
+  _r27 = _r26 ADD x3
+  xx3 = _r27
+  _r28 = y1 ADD y2
+  _r29 = _r28 DIV 2
+  _r30 = _r29 MINUS y3
+  _r31 = _r30 DIV 3
+  _r32 = _r31 ADD y3
+  yy3 = _r32
+  x1 = xx1
+  y1 = yy1
+  x2 = xx2
+  y2 = yy2
+  x3 = xx3
+  y3 = yy3
+  _r33 = x1 ADD x2
+  _r34 = _r33 DIV 2
+  _r35 = _r34 ADD x3
+  _r36 = _r35 DIV 2
+  cx = _r36
+  _r37 = y1 ADD y2
+  _r38 = _r37 DIV 2
+  _r39 = _r38 ADD y3
+  _r40 = _r39 DIV 2
+  cy = _r40
+  _r41 = 2 MUL cx
+  _r42 = _r41 MINUS x1
+  xx1 = _r42
+  _r43 = 2 MUL cy
+  _r44 = _r43 MINUS y1
+  yy1 = _r44
+  _r45 = 2 MUL cx
+  _r46 = _r45 MINUS x2
+  xx2 = _r46
+  _r47 = 2 MUL cy
+  _r48 = _r47 MINUS y2
+  yy2 = _r48
+  _r49 = 2 MUL cx
+  _r50 = _r49 MINUS x3
+  xx3 = _r50
+  _r51 = 2 MUL cy
+  _r52 = _r51 MINUS y3
+  yy3 = _r52
+  x1 = xx2
+  y1 = yy2
+  x2 = xx1
+  y2 = yy1
+  x3 = xx3
+  y3 = yy3
+  Goto _L3
 _L4:
-  _r5 = i SUSADD
+  PushParam x1
+  LCall _PrintDouble
+  PopParams 8
+  PushParam y1
+  LCall _PrintDouble
+  PopParams 8
+  PushParam x2
+  LCall _PrintDouble
+  PopParams 8
+  PushParam y2
+  LCall _PrintDouble
+  PopParams 8
+  PushParam x3
+  LCall _PrintDouble
+  PopParams 8
+  PushParam y3
+  LCall _PrintDouble
+  PopParams 8
   Goto _L1
 _L2:
-  PushParam num
-  LCall _PrintInt
-  PopParams 4

@@ -181,6 +181,9 @@ string ThreeAddressCodeGen(Node* r) {
       if (restype == "char") {
         tacout << "  " << res + " = _ReadChar" << endl;
       }
+      else if (restype == "double" || restype == "float") {
+        tacout << "  " << res + " = _ReadDouble" << endl;
+      }
       else {
         tacout << "  " << res + " = _ReadInteger" << endl;
       }
@@ -188,9 +191,15 @@ string ThreeAddressCodeGen(Node* r) {
     }
     else if (NodeValue == "WRITE") {
       string arg1 = ThreeAddressCodeGen(Children[0]);
+      string type = Children[0]->type;
       tacout << "  PushParam " << arg1 << endl;
-      tacout << "  LCall _PrintInt" << endl;
-      tacout << "  PopParams 4" << endl;
+      if (type == "double_float") {
+        tacout << "  LCall _PrintDouble" << endl;
+        tacout << "  PopParams 8" << endl;
+      } else {
+        tacout << "  LCall _PrintInt" << endl;
+        tacout << "  PopParams 4" << endl;
+      }
       return "";
     }
     else if (NodeValue == "EXPR") {

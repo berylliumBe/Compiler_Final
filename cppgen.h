@@ -15,6 +15,7 @@ using namespace std; \n\
                     \n\
 int main () { \n\
   int _intparam; \n\
+  double _doubleparam; \n\
 ";
 
 string StandardTail = "\
@@ -69,6 +70,9 @@ void TacToCpp () {
         if (func == "_PrintInt") {
           cppout << "  cout << _intparam;" << endl;
         }
+        else if (func == "_PrintDouble") {
+          cppout << "  cout << _doubleparam;" << endl;
+        }
       }
       else if (elements[0] == "Goto") {
         string label = elements[1];
@@ -78,6 +82,7 @@ void TacToCpp () {
     else if (elements.size() == 3) {
       // n = _ReadInteger
       // n = _ReadChar
+      // n = _ReadDouble
       // n = ImmediateValue
       if (elements[2] == "_ReadInteger") {
         string var = elements[0];
@@ -87,6 +92,11 @@ void TacToCpp () {
       else if (elements[2] == "_ReadChar") {
         string var = elements[0];
         PrintVar(var, "char");
+        cppout << "  cin >> " << var << ";" << endl;
+      }
+      else if (elements[2] == "_ReadDouble") {
+        string var = elements[0];
+        PrintVar(var, "double");
         cppout << "  cin >> " << var << ";" << endl;
       }
       else if (elements[1] == "=") {
