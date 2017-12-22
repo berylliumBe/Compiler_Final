@@ -10,6 +10,7 @@ int main()
     {
         int n;
         cin>>n;
+        int dhx = 9;
         long double x1,y1,x2,y2,x3,y3;
         cin>>x1>>y1>>x2>>y2>>x3>>y3;
         long double xx1,yy1,xx2,yy2,xx3,yy3;

@@ -9,6 +9,7 @@
 #include "astgen.h"
 //#include "asmgen.h"
 #include "cppgen.h"
+#include "tacopt.h"
 
 using namespace std;
 
@@ -21,13 +22,15 @@ extern ofstream tacout;
 extern void DfsOutput();
 extern ofstream astout;
 
-//extern void TacToAsm();
+extern void TacToAsm();
+
+extern void OptimizeTac();
 
 extern void TacToCpp();
 
 int main(int argc, char **argv)
 {
-    tacout.open("tac.txt");
+    tacout.open("tacraw.txt");
     astout.open("ast.txt");
 
     yyparse();
@@ -38,6 +41,7 @@ int main(int argc, char **argv)
     astout.close();
 
     //TacToAsm();
+    OptimizeTac();
     TacToCpp();
 
     return 0;

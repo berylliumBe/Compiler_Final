@@ -14,18 +14,15 @@ The output cpp program is `program.cpp`.
 
 Run it with
 
-``` 
+```
     $g++ program.cpp
-    $./a.out 
+    $./a.out
 ```
 
 ### TODO List
 
-1.
-TAC-gen for 3.cpp, 8.cpp, 9.cpp, 10.cpp;
-Code-gen for 3.cpp, 8.cpp, 9.cpp, 10.cpp:
+Support for 3.cpp, 8.cpp, 9.cpp, 10.cpp;
+
 - Array
 - Function
 - Pointer
-
-2. Optimization.
