@@ -21,7 +21,7 @@ extern ofstream tacout;
 extern void DfsOutput();
 extern ofstream astout;
 
-extern void TacToAsm();
+//extern void TacToAsm();
 
 extern void TacToCpp();
 

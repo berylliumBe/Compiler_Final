@@ -1,149 +1,51 @@
 START			type:
     COMP_STMT			type:
         STMT	DECL		type:
+            TYPE	char		type:
+            ARGS_LIST			type:
+                EXPR	DECL_ARG		type:
+                    VAR	log	char	type:int_char
+        STMT	READ		type:
+            VAR	log	char	type:int_char
+        STMT	DECL		type:
             TYPE	int		type:
             ARGS_LIST			type:
-                EXPR	DECL_ASSIGN		type:
-                    VAR	x		type:int_char
-                    VAL	0		type:int_char
+                EXPR	DECL_ARG		type:
+                    VAR	i	int	type:int_char
         STMT	DECL		type:
             TYPE	int		type:
             ARGS_LIST			type:
                 EXPR	DECL_ASSIGN		type:
-                    VAR	y		type:int_char
+                    VAR	num	int	type:int_char
                     VAL	0		type:int_char
-        STMT	DECL		type:
-            TYPE	int		type:
-            ARGS_LIST			type:
-                EXPR	DECL_ASSIGN		type:
-                    VAR	z		type:int_char
-                    VAL	0		type:int_char
-        STMT	FOR		type:
-            STMT	DECL	START	type:
-                TYPE	int		type:
-                ARGS_LIST			type:
-                    EXPR	DECL_ASSIGN		type:
-                        VAR	n		type:int_char
-                        VAL	100		type:int_char
-            EXPR	COMP_LT	CONDITION	type:int_char
-                VAR	n		type:int_char
-                VAL	1000		type:int_char
-            EXPR	SUSADD	ITER_ACTION	type:int_char
-                VAR	n		type:int_char
-            COMP_STMT			type:
-                STMT	EXPR		type:
-                    EXPR	ASSIGN		type:
-                        VAR	x		type:int_char
-                        EXPR	DIV		type:int_char
-                            VAR	n		type:int_char
-                            VAL	100		type:int_char
-                STMT	EXPR		type:
-                    EXPR	ASSIGN		type:
-                        VAR	y		type:int_char
-                        EXPR	DIV		type:int_char
-                            EXPR	MOD		type:int_char
-                                VAR	n		type:int_char
-                                VAL	100		type:int_char
-                            VAL	10		type:int_char
-                STMT	EXPR		type:
-                    EXPR	ASSIGN		type:
-                        VAR	z		type:int_char
-                        EXPR	MOD		type:int_char
-                            VAR	n		type:int_char
-                            VAL	10		type:int_char
-                STMT	IF		type:
-                    EXPR	COMP_EQL	CONDITION	type:int_char
-                        VAR	n		type:int_char
-                        EXPR	ADD		type:int_char
-                            EXPR	ADD		type:int_char
-                                EXPR	MUL		type:int_char
-                                    EXPR	MUL		type:int_char
-                                        VAR	x		type:int_char
-                                        VAR	x		type:int_char
-                                    VAR	x		type:int_char
-                                EXPR	MUL		type:int_char
-                                    EXPR	MUL		type:int_char
-                                        VAR	y		type:int_char
-                                        VAR	y		type:int_char
-                                    VAR	y		type:int_char
-                            EXPR	MUL		type:int_char
-                                EXPR	MUL		type:int_char
-                                    VAR	z		type:int_char
-                                    VAR	z		type:int_char
-                                VAR	z		type:int_char
-                    COMP_STMT		IF BRANCH	type:
-                        STMT	WRITE		type:
-                            VAR	n		type:int_char
-        STMT	DECL		type:
-            TYPE	int		type:
-            ARGS_LIST			type:
-                EXPR	DECL_ASSIGN		type:
-                    VAR	a		type:int_char
-                    VAL	0		type:int_char
+                EXPR	DECL_ARG		type:
+                    VAR	val	int	type:int_char
         STMT	FOR		type:
             EXPR	ASSIGN	START	type:
-                VAR	x		type:int_char
-                VAL	1		type:int_char
+                VAR	i	int	type:int_char
+                VAL	0		type:int_char
             EXPR	COMP_LT	CONDITION	type:int_char
-                VAR	x		type:int_char
-                VAL	10		type:int_char
+                VAR	i	int	type:int_char
+                VAL	8		type:int_char
             EXPR	SUSADD	ITER_ACTION	type:int_char
-                VAR	x		type:int_char
+                VAR	i	int	type:int_char
             COMP_STMT			type:
-                STMT	FOR		type:
-                    EXPR	ASSIGN	START	type:
-                        VAR	y		type:int_char
-                        VAL	0		type:int_char
-                    EXPR	COMP_LT	CONDITION	type:int_char
-                        VAR	y		type:int_char
-                        VAL	10		type:int_char
-                    EXPR	SUSADD	ITER_ACTION	type:int_char
-                        VAR	y		type:int_char
-                    COMP_STMT			type:
-                        STMT	FOR		type:
-                            EXPR	ASSIGN	START	type:
-                                VAR	z		type:int_char
-                                VAL	0		type:int_char
-                            EXPR	COMP_LT	CONDITION	type:int_char
-                                VAR	z		type:int_char
-                                VAL	10		type:int_char
-                            EXPR	SUSADD	ITER_ACTION	type:int_char
-                                VAR	z		type:int_char
-                            COMP_STMT			type:
-                                STMT	EXPR		type:
-                                    EXPR	ASSIGN		type:
-                                        VAR	a		type:int_char
-                                        EXPR	ADD		type:int_char
-                                            EXPR	ADD		type:int_char
-                                                EXPR	MUL		type:int_char
-                                                    VAL	100		type:int_char
-                                                    VAR	x		type:int_char
-                                                EXPR	MUL		type:int_char
-                                                    VAL	10		type:int_char
-                                                    VAR	y		type:int_char
-                                            VAR	z		type:int_char
-                                STMT	IF		type:
-                                    EXPR	COMP_EQL	CONDITION	type:int_char
-                                        VAR	a		type:int_char
-                                        EXPR	ADD		type:int_char
-                                            EXPR	ADD		type:int_char
-                                                EXPR	MUL		type:int_char
-                                                    EXPR	MUL		type:int_char
-                                                        VAR	x		type:int_char
-                                                        VAR	x		type:int_char
-                                                    VAR	x		type:int_char
-                                                EXPR	MUL		type:int_char
-                                                    EXPR	MUL		type:int_char
-                                                        VAR	y		type:int_char
-                                                        VAR	y		type:int_char
-                                                    VAR	y		type:int_char
-                                            EXPR	MUL		type:int_char
-                                                EXPR	MUL		type:int_char
-                                                    VAR	z		type:int_char
-                                                    VAR	z		type:int_char
-                                                VAR	z		type:int_char
-                                    COMP_STMT		IF BRANCH	type:
-                                        STMT	WRITE		type:
-                                            VAR	a		type:int_char
+                STMT	EXPR		type:
+                    EXPR	ASSIGN		type:
+                        VAR	val	int	type:int_char
+                        EXPR	BRIGHT		type:int_char
+                            VAR	log	char	type:int_char
+                            VAR	i	int	type:int_char
+                STMT	EXPR		type:
+                    EXPR	ASSIGN	BAND	type:
+                        VAR	val	int	type:int_char
+                        VAL	0x01		type:int_char
+                STMT	IF		type:
+                    VAR	val	CONDITION	type:int_char
+                    STMT	EXPR	IF BRANCH	type:
+                        EXPR	SUSADD		type:int_char
+                            VAR	num	int	type:int_char
+        STMT	WRITE		type:
+            VAR	num	int	type:int_char
         STMT	RET		type:
             VAL	0		type:int_char

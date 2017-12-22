@@ -199,7 +199,7 @@
     extern int yylex();
     void yyerror(const char *s) { printf("ERROR: %sn", s); }
 
-    std::map<std::string, std::string> IdTable;
+    std::map<std::string, std::string> IdTable; // Id, OrigType
 
     std::string GetType(std::string ori_type) {
       if (ori_type == "int" || ori_type == "char") {
@@ -601,13 +601,13 @@ static const yytype_uint16 yyrline[] =
 {
        0,   102,   102,   108,   109,   112,   116,   119,   120,   123,
      131,   133,   134,   135,   138,   141,   146,   155,   159,   165,
-     175,   178,   194,   195,   196,   197,   200,   202,   209,   213,
-     218,   223,   228,   233,   238,   243,   248,   253,   258,   263,
-     268,   273,   276,   277,   278,   281,   298,   301,   318,   321,
-     333,   336,   348,   351,   363,   366,   381,   396,   399,   414,
-     429,   444,   459,   462,   474,   486,   489,   504,   519,   522,
-     537,   552,   564,   567,   569,   571,   575,   579,   583,   587,
-     600,   609,   612,   613,   616,   617,   619,   621,   625
+     175,   178,   196,   197,   198,   199,   202,   204,   211,   215,
+     220,   225,   230,   235,   240,   245,   250,   255,   260,   265,
+     270,   275,   278,   279,   280,   283,   300,   303,   320,   323,
+     335,   338,   350,   353,   365,   368,   383,   398,   401,   416,
+     431,   446,   461,   464,   476,   488,   491,   506,   521,   524,
+     539,   554,   566,   569,   571,   573,   577,   581,   585,   589,
+     602,   611,   614,   615,   618,   619,   621,   623,   627
 };
 #endif
 
@@ -1775,12 +1775,14 @@ yyreduce:
   case 21:
 #line 178 "parser.y"
     { (yyval.expr) = new Node("STMT", "DECL");
-                        std::string t = GetType((yyvsp[(1) - (2)].type)->NodeValue);
+                        std::string tOrig = (yyvsp[(1) - (2)].type)->NodeValue;
+                        std::string t = GetType(tOrig);
                         for (auto arg : (yyvsp[(2) - (2)].args_list)->Children) {
                           std::string var = arg->Children[0]->NodeValue;
                           if (IdTable.find(var) == IdTable.end()) {
-                            IdTable[var] = t;
+                            IdTable[var] = tOrig;
                             arg->Children[0]->type = t;
+                            arg->Children[0]->NodeInfo = tOrig;
                           }
                           else {
                             std::cout << "Error: Replicated Declaration: " << var << std::endl;
@@ -1791,33 +1793,33 @@ yyreduce:
     break;
 
   case 22:
-#line 194 "parser.y"
+#line 196 "parser.y"
     { (yyval.type) = new Node("TYPE", "int"); ;}
     break;
 
   case 23:
-#line 195 "parser.y"
+#line 197 "parser.y"
     { (yyval.type) = new Node("TYPE", "char"); ;}
     break;
 
   case 24:
-#line 196 "parser.y"
+#line 198 "parser.y"
     { (yyval.type) = new Node("TYPE", "float"); ;}
     break;
 
   case 25:
-#line 197 "parser.y"
+#line 199 "parser.y"
     { (yyval.type) = new Node("TYPE", "double"); ;}
     break;
 
   case 26:
-#line 200 "parser.y"
+#line 202 "parser.y"
     { (yyval.args_list) = new Node("ARGS_LIST");
                   (yyval.args_list)->Children.push_back((yyvsp[(1) - (1)].expr)); ;}
     break;
 
   case 27:
-#line 202 "parser.y"
+#line 204 "parser.y"
     {
                           (yyval.args_list) = (yyvsp[(3) - (3)].args_list);
                           std::vector<Node*>::iterator it;
@@ -1826,7 +1828,7 @@ yyreduce:
     break;
 
   case 28:
-#line 209 "parser.y"
+#line 211 "parser.y"
     { (yyval.expr) = new Node("EXPR", "DECL_ASSIGN");
                                assert((yyvsp[(1) - (3)].expr)->IsLit == false);
                                (yyval.expr)->Children.push_back((yyvsp[(1) - (3)].expr));
@@ -1834,14 +1836,14 @@ yyreduce:
     break;
 
   case 29:
-#line 213 "parser.y"
+#line 215 "parser.y"
     { assert((yyvsp[(1) - (1)].expr)->IsLit == false);
                    (yyval.expr) = new Node("EXPR", "DECL_ARG");
                    (yyval.expr)->Children.push_back((yyvsp[(1) - (1)].expr)); ;}
     break;
 
   case 30:
-#line 218 "parser.y"
+#line 220 "parser.y"
     { (yyval.expr) = new Node("EXPR", "ASSIGN");
                             (yyval.expr)->Children.push_back((yyvsp[(1) - (3)].expr));
                             (yyval.expr)->Children.push_back((yyvsp[(3) - (3)].expr));
@@ -1850,7 +1852,7 @@ yyreduce:
     break;
 
   case 31:
-#line 223 "parser.y"
+#line 225 "parser.y"
     { (yyval.expr) = new Node("EXPR", "ASSIGN", "ADD");
                             (yyval.expr)->Children.push_back((yyvsp[(1) - (3)].expr));
                             (yyval.expr)->Children.push_back((yyvsp[(3) - (3)].expr));
@@ -1859,7 +1861,7 @@ yyreduce:
     break;
 
   case 32:
-#line 228 "parser.y"
+#line 230 "parser.y"
     { (yyval.expr) = new Node("EXPR", "ASSIGN", "MIN");
                             (yyval.expr)->Children.push_back((yyvsp[(1) - (3)].expr));
                             (yyval.expr)->Children.push_back((yyvsp[(3) - (3)].expr));
@@ -1868,7 +1870,7 @@ yyreduce:
     break;
 
   case 33:
-#line 233 "parser.y"
+#line 235 "parser.y"
     { (yyval.expr) = new Node("EXPR", "ASSIGN", "MUL");
                             (yyval.expr)->Children.push_back((yyvsp[(1) - (3)].expr));
                             (yyval.expr)->Children.push_back((yyvsp[(3) - (3)].expr));
@@ -1877,7 +1879,7 @@ yyreduce:
     break;
 
   case 34:
-#line 238 "parser.y"
+#line 240 "parser.y"
     { (yyval.expr) = new Node("EXPR", "ASSIGN", "DIV");
                             (yyval.expr)->Children.push_back((yyvsp[(1) - (3)].expr));
                             (yyval.expr)->Children.push_back((yyvsp[(3) - (3)].expr));
@@ -1886,7 +1888,7 @@ yyreduce:
     break;
 
   case 35:
-#line 243 "parser.y"
+#line 245 "parser.y"
     { (yyval.expr) = new Node("EXPR", "ASSIGN", "MOD");
                             (yyval.expr)->Children.push_back((yyvsp[(1) - (3)].expr));
                             (yyval.expr)->Children.push_back((yyvsp[(3) - (3)].expr));
@@ -1895,7 +1897,7 @@ yyreduce:
     break;
 
   case 36:
-#line 248 "parser.y"
+#line 250 "parser.y"
     { (yyval.expr) = new Node("EXPR", "ASSIGN", "BAND");
                              (yyval.expr)->Children.push_back((yyvsp[(1) - (3)].expr));
                              (yyval.expr)->Children.push_back((yyvsp[(3) - (3)].expr));
@@ -1904,7 +1906,7 @@ yyreduce:
     break;
 
   case 37:
-#line 253 "parser.y"
+#line 255 "parser.y"
     { (yyval.expr) = new Node("EXPR", "ASSIGN", "BXOR");
                              (yyval.expr)->Children.push_back((yyvsp[(1) - (3)].expr));
                              (yyval.expr)->Children.push_back((yyvsp[(3) - (3)].expr));
@@ -1913,7 +1915,7 @@ yyreduce:
     break;
 
   case 38:
-#line 258 "parser.y"
+#line 260 "parser.y"
     { (yyval.expr) = new Node("EXPR", "ASSIGN", "BOR");
                              (yyval.expr)->Children.push_back((yyvsp[(1) - (3)].expr));
                              (yyval.expr)->Children.push_back((yyvsp[(3) - (3)].expr));
@@ -1922,7 +1924,7 @@ yyreduce:
     break;
 
   case 39:
-#line 263 "parser.y"
+#line 265 "parser.y"
     { (yyval.expr) = new Node("EXPR", "ASSIGN", "BLEFT");
                              (yyval.expr)->Children.push_back((yyvsp[(1) - (3)].expr));
                              (yyval.expr)->Children.push_back((yyvsp[(3) - (3)].expr));
@@ -1931,7 +1933,7 @@ yyreduce:
     break;
 
   case 40:
-#line 268 "parser.y"
+#line 270 "parser.y"
     { (yyval.expr) = new Node("EXPR", "ASSIGN", "BRIGHT");
                              (yyval.expr)->Children.push_back((yyvsp[(1) - (3)].expr));
                              (yyval.expr)->Children.push_back((yyvsp[(3) - (3)].expr));
@@ -1940,27 +1942,27 @@ yyreduce:
     break;
 
   case 41:
-#line 273 "parser.y"
+#line 275 "parser.y"
     { (yyval.expr) = (yyvsp[(1) - (1)].expr); ;}
     break;
 
   case 42:
-#line 276 "parser.y"
+#line 278 "parser.y"
     { (yyval.expr) = (yyvsp[(1) - (1)].expr); ;}
     break;
 
   case 43:
-#line 277 "parser.y"
+#line 279 "parser.y"
     { (yyval.expr) = (yyvsp[(1) - (1)].expr); ;}
     break;
 
   case 44:
-#line 278 "parser.y"
+#line 280 "parser.y"
     { (yyval.expr) = new Node("OPTIONAL_EXPR", "EMPTY"); ;}
     break;
 
   case 45:
-#line 281 "parser.y"
+#line 283 "parser.y"
     { (yyval.expr) = new Node("EXPR", "OR");
                              assert((yyvsp[(1) - (3)].expr)->type == "int_char" || (yyvsp[(1) - (3)].expr)->type == "double_float");
                              assert((yyvsp[(3) - (3)].expr)->type == "int_char" || (yyvsp[(3) - (3)].expr)->type == "double_float");
@@ -1981,12 +1983,12 @@ yyreduce:
     break;
 
   case 46:
-#line 298 "parser.y"
+#line 300 "parser.y"
     { (yyval.expr) = (yyvsp[(1) - (1)].expr); ;}
     break;
 
   case 47:
-#line 301 "parser.y"
+#line 303 "parser.y"
     { (yyval.expr) = new Node("EXPR", "AND");
                              assert((yyvsp[(1) - (3)].expr)->type == "int_char" || (yyvsp[(1) - (3)].expr)->type == "double_float");
                              assert((yyvsp[(3) - (3)].expr)->type == "int_char" || (yyvsp[(3) - (3)].expr)->type == "double_float");
@@ -2007,12 +2009,12 @@ yyreduce:
     break;
 
   case 48:
-#line 318 "parser.y"
+#line 320 "parser.y"
     { (yyval.expr) = (yyvsp[(1) - (1)].expr); ;}
     break;
 
   case 49:
-#line 321 "parser.y"
+#line 323 "parser.y"
     { (yyval.expr) = new Node("EXPR", "BOR");
                              assert((yyvsp[(1) - (3)].expr)->type == "int_char");
                              assert((yyvsp[(3) - (3)].expr)->type == "int_char");
@@ -2028,12 +2030,12 @@ yyreduce:
     break;
 
   case 50:
-#line 333 "parser.y"
+#line 335 "parser.y"
     { (yyval.expr) = (yyvsp[(1) - (1)].expr); ;}
     break;
 
   case 51:
-#line 336 "parser.y"
+#line 338 "parser.y"
     { (yyval.expr) = new Node("EXPR", "BXOR");
                             assert((yyvsp[(1) - (3)].expr)->type == "int_char");
                             assert((yyvsp[(3) - (3)].expr)->type == "int_char");
@@ -2049,12 +2051,12 @@ yyreduce:
     break;
 
   case 52:
-#line 348 "parser.y"
+#line 350 "parser.y"
     { (yyval.expr) = (yyvsp[(1) - (1)].expr); ;}
     break;
 
   case 53:
-#line 351 "parser.y"
+#line 353 "parser.y"
     { (yyval.expr) = new Node("EXPR", "TBAND");
                             assert((yyvsp[(1) - (3)].expr)->type == "int_char");
                             assert((yyvsp[(3) - (3)].expr)->type == "int_char");
@@ -2070,12 +2072,12 @@ yyreduce:
     break;
 
   case 54:
-#line 363 "parser.y"
+#line 365 "parser.y"
     { (yyval.expr) = (yyvsp[(1) - (1)].expr); ;}
     break;
 
   case 55:
-#line 366 "parser.y"
+#line 368 "parser.y"
     { (yyval.expr) = new Node("EXPR", "COMP_EQL");
                            assert((yyvsp[(1) - (3)].expr)->type == "int_char" || (yyvsp[(1) - (3)].expr)->type == "double_float");
                            assert((yyvsp[(3) - (3)].expr)->type == "int_char" || (yyvsp[(3) - (3)].expr)->type == "double_float");
@@ -2094,7 +2096,7 @@ yyreduce:
     break;
 
   case 56:
-#line 381 "parser.y"
+#line 383 "parser.y"
     { (yyval.expr) = new Node("EXPR", "COMP_NE");
                             assert((yyvsp[(1) - (3)].expr)->type == "int_char" || (yyvsp[(1) - (3)].expr)->type == "double_float");
                             assert((yyvsp[(3) - (3)].expr)->type == "int_char" || (yyvsp[(3) - (3)].expr)->type == "double_float");
@@ -2113,12 +2115,12 @@ yyreduce:
     break;
 
   case 57:
-#line 396 "parser.y"
+#line 398 "parser.y"
     { (yyval.expr) = (yyvsp[(1) - (1)].expr); ;}
     break;
 
   case 58:
-#line 399 "parser.y"
+#line 401 "parser.y"
     { (yyval.expr) = new Node("EXPR", "COMP_LT");
                            assert((yyvsp[(1) - (3)].expr)->type == "int_char" || (yyvsp[(1) - (3)].expr)->type == "double_float");
                            assert((yyvsp[(3) - (3)].expr)->type == "int_char" || (yyvsp[(3) - (3)].expr)->type == "double_float");
@@ -2137,7 +2139,7 @@ yyreduce:
     break;
 
   case 59:
-#line 414 "parser.y"
+#line 416 "parser.y"
     { (yyval.expr) = new Node("EXPR", "COMP_GT");
                             assert((yyvsp[(1) - (3)].expr)->type == "int_char" || (yyvsp[(1) - (3)].expr)->type == "double_float");
                             assert((yyvsp[(3) - (3)].expr)->type == "int_char" || (yyvsp[(3) - (3)].expr)->type == "double_float");
@@ -2156,7 +2158,7 @@ yyreduce:
     break;
 
   case 60:
-#line 429 "parser.y"
+#line 431 "parser.y"
     { (yyval.expr) = new Node("EXPR", "COMP_LE");
                             assert((yyvsp[(1) - (3)].expr)->type == "int_char" || (yyvsp[(1) - (3)].expr)->type == "double_float");
                             assert((yyvsp[(3) - (3)].expr)->type == "int_char" || (yyvsp[(3) - (3)].expr)->type == "double_float");
@@ -2175,7 +2177,7 @@ yyreduce:
     break;
 
   case 61:
-#line 444 "parser.y"
+#line 446 "parser.y"
     { (yyval.expr) = new Node("EXPR", "COMP_GE");
                             assert((yyvsp[(1) - (3)].expr)->type == "int_char" || (yyvsp[(1) - (3)].expr)->type == "double_float");
                             assert((yyvsp[(3) - (3)].expr)->type == "int_char" || (yyvsp[(3) - (3)].expr)->type == "double_float");
@@ -2194,12 +2196,12 @@ yyreduce:
     break;
 
   case 62:
-#line 459 "parser.y"
+#line 461 "parser.y"
     { (yyval.expr) = (yyvsp[(1) - (1)].expr); ;}
     break;
 
   case 63:
-#line 462 "parser.y"
+#line 464 "parser.y"
     { (yyval.expr) = new Node("EXPR", "BLEFT");
                              assert((yyvsp[(1) - (3)].expr)->type == "int_char");
                              assert((yyvsp[(3) - (3)].expr)->type == "int_char");
@@ -2215,7 +2217,7 @@ yyreduce:
     break;
 
   case 64:
-#line 474 "parser.y"
+#line 476 "parser.y"
     { (yyval.expr) = new Node("EXPR", "BRIGHT");
                               assert((yyvsp[(1) - (3)].expr)->type == "int_char");
                               assert((yyvsp[(3) - (3)].expr)->type == "int_char");
@@ -2231,12 +2233,12 @@ yyreduce:
     break;
 
   case 65:
-#line 486 "parser.y"
+#line 488 "parser.y"
     { (yyval.expr) = (yyvsp[(1) - (1)].expr); ;}
     break;
 
   case 66:
-#line 489 "parser.y"
+#line 491 "parser.y"
     { (yyval.expr) = new Node("EXPR", "ADD");
                             assert((yyvsp[(1) - (3)].expr)->type == "int_char" || (yyvsp[(1) - (3)].expr)->type == "double_float");
                             assert((yyvsp[(3) - (3)].expr)->type == "int_char" || (yyvsp[(3) - (3)].expr)->type == "double_float");
@@ -2255,7 +2257,7 @@ yyreduce:
     break;
 
   case 67:
-#line 504 "parser.y"
+#line 506 "parser.y"
     { (yyval.expr) = new Node("EXPR", "MINUS");
                              assert((yyvsp[(1) - (3)].expr)->type == "int_char" || (yyvsp[(1) - (3)].expr)->type == "double_float");
                              assert((yyvsp[(3) - (3)].expr)->type == "int_char" || (yyvsp[(3) - (3)].expr)->type == "double_float");
@@ -2274,12 +2276,12 @@ yyreduce:
     break;
 
   case 68:
-#line 519 "parser.y"
+#line 521 "parser.y"
     { (yyval.expr) = (yyvsp[(1) - (1)].expr); ;}
     break;
 
   case 69:
-#line 522 "parser.y"
+#line 524 "parser.y"
     { (yyval.expr) = new Node("EXPR", "MUL");
                           assert((yyvsp[(1) - (3)].expr)->type == "int_char" || (yyvsp[(1) - (3)].expr)->type == "double_float");
                           assert((yyvsp[(3) - (3)].expr)->type == "int_char" || (yyvsp[(3) - (3)].expr)->type == "double_float");
@@ -2298,7 +2300,7 @@ yyreduce:
     break;
 
   case 70:
-#line 537 "parser.y"
+#line 539 "parser.y"
     { (yyval.expr) = new Node("EXPR", "DIV");
                           assert((yyvsp[(1) - (3)].expr)->type == "int_char" || (yyvsp[(1) - (3)].expr)->type == "double_float");
                           assert((yyvsp[(3) - (3)].expr)->type == "int_char" || (yyvsp[(3) - (3)].expr)->type == "double_float");
@@ -2317,7 +2319,7 @@ yyreduce:
     break;
 
   case 71:
-#line 552 "parser.y"
+#line 554 "parser.y"
     { (yyval.expr) = new Node("EXPR", "MOD");
                           assert((yyvsp[(1) - (3)].expr)->type == "int_char");
                           assert((yyvsp[(3) - (3)].expr)->type == "int_char");
@@ -2333,24 +2335,24 @@ yyreduce:
     break;
 
   case 72:
-#line 564 "parser.y"
+#line 566 "parser.y"
     { (yyval.term) = (yyvsp[(1) - (1)].term); ;}
     break;
 
   case 73:
-#line 567 "parser.y"
+#line 569 "parser.y"
     { (yyval.factor) = new Node("VAL", (yyvsp[(2) - (2)].str), "NEG", "int_char");
                           (yyval.expr)->IsLit = true; ;}
     break;
 
   case 74:
-#line 569 "parser.y"
+#line 571 "parser.y"
     { (yyval.factor) = new Node("VAL", (yyvsp[(2) - (2)].str), "", "int_char");
                          (yyval.expr)->IsLit = true; ;}
     break;
 
   case 75:
-#line 571 "parser.y"
+#line 573 "parser.y"
     { (yyval.expr) = new Node("EXPR", "PRSADD");
                            assert((yyvsp[(2) - (2)].expr)->type == "int_char");
                            (yyval.expr)->type = "int_char";
@@ -2358,7 +2360,7 @@ yyreduce:
     break;
 
   case 76:
-#line 575 "parser.y"
+#line 577 "parser.y"
     { (yyval.expr) = new Node("EXPR", "PRSMINUS");
                              assert((yyvsp[(2) - (2)].expr)->type == "int_char");
                              (yyval.expr)->type = "int_char";
@@ -2366,7 +2368,7 @@ yyreduce:
     break;
 
   case 77:
-#line 579 "parser.y"
+#line 581 "parser.y"
     { (yyval.expr) = new Node("EXPR", "SUSADD");
                            assert((yyvsp[(1) - (2)].expr)->type == "int_char");
                            (yyval.expr)->type = "int_char";
@@ -2374,7 +2376,7 @@ yyreduce:
     break;
 
   case 78:
-#line 583 "parser.y"
+#line 585 "parser.y"
     { (yyval.expr) = new Node("EXPR", "SUSMINUS");
                              assert((yyvsp[(1) - (2)].expr)->type == "int_char");
                              (yyval.expr)->type = "int_char";
@@ -2382,7 +2384,7 @@ yyreduce:
     break;
 
   case 79:
-#line 587 "parser.y"
+#line 589 "parser.y"
     { (yyval.expr) = new Node("EXPR", "NOT");
                      assert((yyvsp[(2) - (2)].expr)->type == "int_char" || (yyvsp[(2) - (2)].expr)->type == "double_float");
                      (yyval.expr)->type = "int_char";
@@ -2399,7 +2401,7 @@ yyreduce:
     break;
 
   case 80:
-#line 600 "parser.y"
+#line 602 "parser.y"
     { (yyval.expr) = new Node("EXPR", "BNOT");
                       assert((yyvsp[(2) - (2)].expr)->type == "int_char");
                       (yyval.expr)->type = "int_char";
@@ -2412,56 +2414,57 @@ yyreduce:
     break;
 
   case 81:
-#line 609 "parser.y"
+#line 611 "parser.y"
     { (yyval.term) = (yyvsp[(1) - (1)].term); ;}
     break;
 
   case 82:
-#line 612 "parser.y"
+#line 614 "parser.y"
     { (yyval.expr) = (yyvsp[(2) - (3)].expr); ;}
     break;
 
   case 83:
-#line 613 "parser.y"
+#line 615 "parser.y"
     { (yyval.factor) = (yyvsp[(1) - (1)].expr); ;}
     break;
 
   case 84:
-#line 616 "parser.y"
+#line 618 "parser.y"
     { (yyval.factor) = (yyvsp[(1) - (1)].expr); ;}
     break;
 
   case 85:
-#line 617 "parser.y"
+#line 619 "parser.y"
     { (yyval.factor) = new Node("VAL", (yyvsp[(1) - (1)].str), "", "int_char");
                    (yyval.expr)->IsLit = true; ;}
     break;
 
   case 86:
-#line 619 "parser.y"
+#line 621 "parser.y"
     { (yyval.factor) = new Node("VAL", (yyvsp[(1) - (1)].str), "", "double_float");
                   (yyval.expr)->IsLit = true; ;}
     break;
 
   case 87:
-#line 621 "parser.y"
+#line 623 "parser.y"
     { (yyval.factor) = new Node("VAL", (yyvsp[(1) - (1)].str), "", "int_char");
                 (yyval.expr)->IsLit = true; ;}
     break;
 
   case 88:
-#line 625 "parser.y"
+#line 627 "parser.y"
     { (yyval.identifier) = new Node("VAR", (yyvsp[(1) - (1)].str));
                            std::string var = (yyvsp[(1) - (1)].str);
                            if (IdTable.find(var) != IdTable.end()) {
-                             (yyval.identifier)->type = IdTable.find(var)->second;
+                             (yyval.identifier)->type = GetType(IdTable.find(var)->second);
+                             (yyval.identifier)->NodeInfo = IdTable.find(var)->second;
                            }
                           ;}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 2465 "parser.cpp"
+#line 2468 "parser.cpp"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2675,6 +2678,6 @@ yyreturn:
 }
 
 
-#line 633 "parser.y"
+#line 636 "parser.y"
 
 

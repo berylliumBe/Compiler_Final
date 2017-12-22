@@ -77,10 +77,16 @@ void TacToCpp () {
     }
     else if (elements.size() == 3) {
       // n = _ReadInteger
+      // n = _ReadChar
       // n = ImmediateValue
       if (elements[2] == "_ReadInteger") {
         string var = elements[0];
         PrintVar(var, "int");
+        cppout << "  cin >> " << var << ";" << endl;
+      }
+      else if (elements[2] == "_ReadChar") {
+        string var = elements[0];
+        PrintVar(var, "char");
         cppout << "  cin >> " << var << ";" << endl;
       }
       else if (elements[1] == "=") {
@@ -172,6 +178,34 @@ void TacToCpp () {
       else if (op == "COMP_NE") {
         PrintVar(a, "bool");
         cppout << "  " << a << " = " << b << " != " << c << ";" << endl;
+      }
+      else if (op == "BLEFT") {
+        PrintVar(a, "int");
+        cppout << "  " << a << " = " << b << " << " << c << ";" << endl;
+      }
+      else if (op == "BRIGHT") {
+        PrintVar(a, "int");
+        cppout << "  " << a << " = " << b << " >> " << c << ";" << endl;
+      }
+      else if (op == "BAND") {
+        PrintVar(a, "int");
+        cppout << "  " << a << " = " << b << " & " << c << ";" << endl;
+      }
+      else if (op == "BOR") {
+        PrintVar(a, "int");
+        cppout << "  " << a << " = " << b << " | " << c << ";" << endl;
+      }
+      else if (op == "BXOR") {
+        PrintVar(a, "int");
+        cppout << "  " << a << " = " << b << " ^ " << c << ";" << endl;
+      }
+      else if (op == "AND") {
+        PrintVar(a, "bool");
+        cppout << "  " << a << " = " << b << " && " << c << ";" << endl;
+      }
+      else if (op == "OR") {
+        PrintVar(a, "bool");
+        cppout << "  " << a << " = " << b << " || " << c << ";" << endl;
       }
     }
   }

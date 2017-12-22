@@ -106,6 +106,9 @@ string ThreeAddressCodeGen(Node* r) {
         tacout << "  " << res << " = " << arg2 << endl;
       }
     }
+    else if (NodeValue == "DECL_ARG") {
+      ThreeAddressCodeGen(Children[0]);
+    }
     return res;
   }
   else if (NodeType == "STMT") {
@@ -174,7 +177,13 @@ string ThreeAddressCodeGen(Node* r) {
     }
     else if (NodeValue == "READ") {
       string res = Children[0]->NodeValue;
-      tacout << "  " << res + " = _ReadInteger" << endl;
+      string restype = Children[0]->NodeInfo;
+      if (restype == "char") {
+        tacout << "  " << res + " = _ReadChar" << endl;
+      }
+      else {
+        tacout << "  " << res + " = _ReadInteger" << endl;
+      }
       return res;
     }
     else if (NodeValue == "WRITE") {

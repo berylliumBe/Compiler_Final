@@ -12,7 +12,7 @@
     extern int yylex();
     void yyerror(const char *s) { printf("ERROR: %sn", s); }
 
-    std::map<std::string, std::string> IdTable;
+    std::map<std::string, std::string> IdTable; // Id, OrigType
 
     std::string GetType(std::string ori_type) {
       if (ori_type == "int" || ori_type == "char") {
@@ -176,12 +176,14 @@ decl_stmt : decl TSEMICOLON { $<expr>$ = $<expr>1; }
           ;
 
 decl : type args_list { $<expr>$ = new Node("STMT", "DECL");
-                        std::string t = GetType($<type>1->NodeValue);
+                        std::string tOrig = $<type>1->NodeValue;
+                        std::string t = GetType(tOrig);
                         for (auto arg : $<args_list>2->Children) {
                           std::string var = arg->Children[0]->NodeValue;
                           if (IdTable.find(var) == IdTable.end()) {
-                            IdTable[var] = t;
+                            IdTable[var] = tOrig;
                             arg->Children[0]->type = t;
+                            arg->Children[0]->NodeInfo = tOrig;
                           }
                           else {
                             std::cout << "Error: Replicated Declaration: " << var << std::endl;
@@ -625,7 +627,8 @@ expr0 : identifier { $<factor>$ = $<expr>1; }
 identifier : TIDENTIFIER { $<identifier>$ = new Node("VAR", $1);
                            std::string var = $1;
                            if (IdTable.find(var) != IdTable.end()) {
-                             $<identifier>$->type = IdTable.find(var)->second;
+                             $<identifier>$->type = GetType(IdTable.find(var)->second);
+                             $<identifier>$->NodeInfo = IdTable.find(var)->second;
                            }
                           }
            ;
