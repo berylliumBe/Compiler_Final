@@ -1,29 +1,36 @@
-//int a1,a2,a3,n;
-
+//prime test
 #include <iostream>
 using namespace std;
 
+
 int main()
 {
-    //cout << "Hello world!" << endl;
-    int a1, a2, a3, n;
-    cin >> n;
-    a1=1;
-    a2=1;
-    if (n==1)
+    int t,num=0;
+    cin >> t;
+    while (t--)
+
     {
-       	cout << a1;
+        int n;
+        cin >> n;
+        if (n<2)
+        {
+            cout << -1;
+        }
+        else
+        {
+            int flag=0;
+            for (int i=2;i*i<=n;i++)
+                if (n%i==0) flag=1;
+            if (flag) cout << 1;
+                else
+                    {
+                        num++;
+                        cout << 0;
+                    }
+        }
     }
-    if (n==2)
-    {
-        cout << a2;
-    }
-    for (int i=3;i<=n;i++)
-    {
-        a3=a1+a2;
-        a1=a2;
-        a2=a3;
-    }
-    if (n>=3) cout << a3;
+    int n=num;
+    cout << n;
     return 0;
+
 }

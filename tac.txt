@@ -1,39 +1,48 @@
 start:
-  n = _ReadInteger
-  a1 = 1
-  a2 = 1
-  _r1 = n COMP_EQL 1
-  IfZ _r1 Goto _L1
-  PushParam a1
-  LCall _PrintInt
-  PopParams 4
-  Goto _L2
+  num = 0
+  t = _ReadInteger
 _L1:
-_L2:
-  _r2 = n COMP_EQL 2
+  _r1 = t SUSMINUS
+  IfZ _r1 Goto _L2
+  n = _ReadInteger
+  _r2 = n COMP_LT 2
   IfZ _r2 Goto _L3
-  PushParam a2
+  PushParam -1
   LCall _PrintInt
   PopParams 4
   Goto _L4
 _L3:
-_L4:
-  i = 3
+  flag = 0
+  i = 2
 _L5:
-  _r3 = i COMP_LE n
-  IfZ _r3 Goto _L6
-  _r4 = a1 ADD a2
-  a3 = _r4
-  a1 = a2
-  a2 = a3
-  _r5 = i SUSADD
-  Goto _L5
-_L6:
-  _r6 = n COMP_GE 3
+  _r3 = i MUL i
+  _r4 = _r3 COMP_LE n
+  IfZ _r4 Goto _L6
+  _r5 = n MOD i
+  _r6 = _r5 COMP_EQL 0
   IfZ _r6 Goto _L7
-  PushParam a3
-  LCall _PrintInt
-  PopParams 4
+  flag = 1
   Goto _L8
 _L7:
 _L8:
+  _r7 = i SUSADD
+  Goto _L5
+_L6:
+  IfZ flag Goto _L9
+  PushParam 1
+  LCall _PrintInt
+  PopParams 4
+  Goto _L10
+_L9:
+  _r8 = num SUSADD
+  PushParam 0
+  LCall _PrintInt
+  PopParams 4
+_L10:
+_L4:
+  Goto _L1
+_L2:
+  n = num
+  PushParam n
+  LCall _PrintInt
+  PopParams 4

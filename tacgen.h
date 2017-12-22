@@ -61,7 +61,11 @@ string ThreeAddressCodeGen(Node* r) {
   vector<Node*> Children = r->Children;
 
   if (NodeType == "VAL") {
-    return NodeValue;
+    if (NodeInfo == "NEG") {
+      return "-" + NodeValue;
+    } else {
+      return NodeValue;
+    }
   }
   else if (NodeType == "VAR") {
     return NodeValue;
