@@ -96,7 +96,8 @@ string ThreeAddressCodeGen(Node* r) {
       string arg2 = ThreeAddressCodeGen(Children[1]);
 
       string op = NodeInfo;
-      if (op != "") {
+      if (op != "" && op != "START") {
+        // TODO(yuxifeng): build a table of accept op.
         rn++;
         string reg = "_r" + to_string(rn);
         tacout << "  " << reg << " = " << res << " " << op << " " << arg2 << endl;

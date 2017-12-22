@@ -1,36 +1,38 @@
-//prime test
 #include <iostream>
-using namespace std;
 
+using namespace std;
 
 int main()
 {
-    int t,num=0;
-    cin >> t;
-    while (t--)
-
+    int x = 0;
+    int y = 0;
+    int z = 0;
+    for (int n=100; n<1000; n++)
     {
-        int n;
-        cin >> n;
-        if (n<2)
+        x = n / 100;
+        y = (n % 100)/10 ;
+        z = n % 10;
+
+        if(n == x*x*x + y*y*y +z*z*z)
         {
-            cout << -1;
-        }
-        else
-        {
-            int flag=0;
-            for (int i=2;i*i<=n;i++)
-                if (n%i==0) flag=1;
-            if (flag) cout << 1;
-                else
-                    {
-                        num++;
-                        cout << 0;
-                    }
+            cout << n;
         }
     }
-    int n=num;
-    cout << n;
-    return 0;
+    int a = 0;
+    for ( x=1; x<10; x++)
+    {
+        for ( y =0; y<10; y++)
+        {
+            for ( z = 0; z<10; z++)
+            {
+                a = 100*x+10*y+z;
+                if (a== x*x*x + y*y*y + z*z*z)
+                {
+                    cout << a;
+                }
+            }
+        }
 
+    }
+    return 0;
 }

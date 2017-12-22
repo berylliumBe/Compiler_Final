@@ -1,48 +1,77 @@
 start:
-  num = 0
-  t = _ReadInteger
+  x = 0
+  y = 0
+  z = 0
+  n = 100
 _L1:
-  _r1 = t SUSMINUS
+  _r1 = n COMP_LT 1000
   IfZ _r1 Goto _L2
-  n = _ReadInteger
-  _r2 = n COMP_LT 2
-  IfZ _r2 Goto _L3
-  PushParam -1
+  _r2 = n DIV 100
+  x = _r2
+  _r3 = n MOD 100
+  _r4 = _r3 DIV 10
+  y = _r4
+  _r5 = n MOD 10
+  z = _r5
+  _r6 = x MUL x
+  _r7 = _r6 MUL x
+  _r8 = y MUL y
+  _r9 = _r8 MUL y
+  _r10 = _r7 ADD _r9
+  _r11 = z MUL z
+  _r12 = _r11 MUL z
+  _r13 = _r10 ADD _r12
+  _r14 = n COMP_EQL _r13
+  IfZ _r14 Goto _L3
+  PushParam n
   LCall _PrintInt
   PopParams 4
   Goto _L4
 _L3:
-  flag = 0
-  i = 2
-_L5:
-  _r3 = i MUL i
-  _r4 = _r3 COMP_LE n
-  IfZ _r4 Goto _L6
-  _r5 = n MOD i
-  _r6 = _r5 COMP_EQL 0
-  IfZ _r6 Goto _L7
-  flag = 1
-  Goto _L8
-_L7:
-_L8:
-  _r7 = i SUSADD
-  Goto _L5
-_L6:
-  IfZ flag Goto _L9
-  PushParam 1
-  LCall _PrintInt
-  PopParams 4
-  Goto _L10
-_L9:
-  _r8 = num SUSADD
-  PushParam 0
-  LCall _PrintInt
-  PopParams 4
-_L10:
 _L4:
+  _r15 = n SUSADD
   Goto _L1
 _L2:
-  n = num
-  PushParam n
+  a = 0
+  x = 1
+_L5:
+  _r16 = x COMP_LT 10
+  IfZ _r16 Goto _L6
+  y = 0
+_L7:
+  _r17 = y COMP_LT 10
+  IfZ _r17 Goto _L8
+  z = 0
+_L9:
+  _r18 = z COMP_LT 10
+  IfZ _r18 Goto _L10
+  _r19 = 100 MUL x
+  _r20 = 10 MUL y
+  _r21 = _r19 ADD _r20
+  _r22 = _r21 ADD z
+  a = _r22
+  _r23 = x MUL x
+  _r24 = _r23 MUL x
+  _r25 = y MUL y
+  _r26 = _r25 MUL y
+  _r27 = _r24 ADD _r26
+  _r28 = z MUL z
+  _r29 = _r28 MUL z
+  _r30 = _r27 ADD _r29
+  _r31 = a COMP_EQL _r30
+  IfZ _r31 Goto _L11
+  PushParam a
   LCall _PrintInt
   PopParams 4
+  Goto _L12
+_L11:
+_L12:
+  _r32 = z SUSADD
+  Goto _L9
+_L10:
+  _r33 = y SUSADD
+  Goto _L7
+_L8:
+  _r34 = x SUSADD
+  Goto _L5
+_L6:
