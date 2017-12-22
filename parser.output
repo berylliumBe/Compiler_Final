@@ -99,9 +99,9 @@ Grammar
    66      | expr4 TMINUS expr3
    67      | expr3
 
-   68 expr3: expr2 TMUL expr3
-   69      | expr2 TDIV expr3
-   70      | expr2 TMOD expr3
+   68 expr3: expr3 TMUL expr2
+   69      | expr3 TDIV expr2
+   70      | expr3 TMOD expr2
    71      | expr2
 
    72 expr2: TMINUS TINTEGER
@@ -811,20 +811,20 @@ state 48
 state 49
 
    67 expr4: expr3 .
+   68 expr3: expr3 . TMUL expr2
+   69      | expr3 . TDIV expr2
+   70      | expr3 . TMOD expr2
+
+    TMUL  shift, and go to state 90
+    TDIV  shift, and go to state 91
+    TMOD  shift, and go to state 92
 
     $default  reduce using rule 67 (expr4)
 
 
 state 50
 
-   68 expr3: expr2 . TMUL expr3
-   69      | expr2 . TDIV expr3
-   70      | expr2 . TMOD expr3
-   71      | expr2 .
-
-    TMUL  shift, and go to state 90
-    TDIV  shift, and go to state 91
-    TMOD  shift, and go to state 92
+   71 expr3: expr2 .
 
     $default  reduce using rule 71 (expr3)
 
@@ -1554,7 +1554,7 @@ state 89
 
 state 90
 
-   68 expr3: expr2 TMUL . expr3
+   68 expr3: expr3 TMUL . expr2
 
     TIDENTIFIER  shift, and go to state 17
     TINTEGER     shift, and go to state 18
@@ -1568,8 +1568,7 @@ state 90
     TNOT         shift, and go to state 28
     TBNOT        shift, and go to state 29
 
-    expr3       go to state 133
-    expr2       go to state 50
+    expr2       go to state 133
     expr1       go to state 118
     expr0       go to state 52
     identifier  go to state 53
@@ -1577,7 +1576,7 @@ state 90
 
 state 91
 
-   69 expr3: expr2 TDIV . expr3
+   69 expr3: expr3 TDIV . expr2
 
     TIDENTIFIER  shift, and go to state 17
     TINTEGER     shift, and go to state 18
@@ -1591,8 +1590,7 @@ state 91
     TNOT         shift, and go to state 28
     TBNOT        shift, and go to state 29
 
-    expr3       go to state 134
-    expr2       go to state 50
+    expr2       go to state 134
     expr1       go to state 118
     expr0       go to state 52
     identifier  go to state 53
@@ -1600,7 +1598,7 @@ state 91
 
 state 92
 
-   70 expr3: expr2 TMOD . expr3
+   70 expr3: expr3 TMOD . expr2
 
     TIDENTIFIER  shift, and go to state 17
     TINTEGER     shift, and go to state 18
@@ -1614,8 +1612,7 @@ state 92
     TNOT         shift, and go to state 28
     TBNOT        shift, and go to state 29
 
-    expr3       go to state 135
-    expr2       go to state 50
+    expr2       go to state 135
     expr1       go to state 118
     expr0       go to state 52
     identifier  go to state 53
@@ -2194,6 +2191,13 @@ state 128
 state 129
 
    65 expr4: expr4 TPLUS expr3 .
+   68 expr3: expr3 . TMUL expr2
+   69      | expr3 . TDIV expr2
+   70      | expr3 . TMOD expr2
+
+    TMUL  shift, and go to state 90
+    TDIV  shift, and go to state 91
+    TMOD  shift, and go to state 92
 
     $default  reduce using rule 65 (expr4)
 
@@ -2201,6 +2205,13 @@ state 129
 state 130
 
    66 expr4: expr4 TMINUS expr3 .
+   68 expr3: expr3 . TMUL expr2
+   69      | expr3 . TDIV expr2
+   70      | expr3 . TMOD expr2
+
+    TMUL  shift, and go to state 90
+    TDIV  shift, and go to state 91
+    TMOD  shift, and go to state 92
 
     $default  reduce using rule 66 (expr4)
 
@@ -2221,21 +2232,21 @@ state 132
 
 state 133
 
-   68 expr3: expr2 TMUL expr3 .
+   68 expr3: expr3 TMUL expr2 .
 
     $default  reduce using rule 68 (expr3)
 
 
 state 134
 
-   69 expr3: expr2 TDIV expr3 .
+   69 expr3: expr3 TDIV expr2 .
 
     $default  reduce using rule 69 (expr3)
 
 
 state 135
 
-   70 expr3: expr2 TMOD expr3 .
+   70 expr3: expr3 TMOD expr2 .
 
     $default  reduce using rule 70 (expr3)
 

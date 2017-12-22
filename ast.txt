@@ -9,12 +9,12 @@ START			type:
             VAR	n		type:int_char
         STMT	WRITE		type:
             EXPR	MINUS		type:int_char
-                EXPR	MUL		type:int_char
-                    EXPR	PRSADD		type:int_char
+                EXPR	DIV		type:int_char
+                    EXPR	MUL		type:int_char
+                        EXPR	PRSADD		type:int_char
+                            VAR	n		type:int_char
                         VAR	n		type:int_char
-                    EXPR	DIV		type:int_char
-                        VAR	n		type:int_char
-                        VAL	2		type:int_char
+                    VAL	2		type:int_char
                 VAL	1		type:int_char
         STMT	RET		type:
             VAL	0		type:int_char

@@ -7,7 +7,8 @@
 #include "node.h"
 #include "tacgen.h"
 #include "astgen.h"
-#include "asmgen.h"
+//#include "asmgen.h"
+#include "cppgen.h"
 
 using namespace std;
 
@@ -22,6 +23,8 @@ extern ofstream astout;
 
 extern void TacToAsm();
 
+extern void TacToCpp();
+
 int main(int argc, char **argv)
 {
     tacout.open("tac.txt");
@@ -34,7 +37,8 @@ int main(int argc, char **argv)
     tacout.close();
     astout.close();
 
-    TacToAsm();
+    //TacToAsm();
+    TacToCpp();
 
     return 0;
 }

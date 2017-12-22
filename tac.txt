@@ -1,8 +1,8 @@
 start:
   n = _ReadInteger
   _r1 = PRSADD n
-  _r2 = n DIV 2
-  _r3 = _r1 MUL _r2
+  _r2 = _r1 MUL n
+  _r3 = _r2 DIV 2
   _r4 = _r3 MINUS 1
   PushParam _r4
   LCall _PrintInt

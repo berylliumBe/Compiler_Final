@@ -519,7 +519,7 @@ expr4 : expr4 TPLUS expr3 { $<expr>$ = new Node("EXPR", "ADD");
       | expr3 { $<expr>$ = $<expr>1; }
       ;
 
-expr3 : expr2 TMUL expr3 { $<expr>$ = new Node("EXPR", "MUL");
+expr3 : expr3 TMUL expr2 { $<expr>$ = new Node("EXPR", "MUL");
                           assert($<expr>1->type == "int_char" || $<expr>1->type == "double_float");
                           assert($<expr>3->type == "int_char" || $<expr>3->type == "double_float");
                           $<expr>$->type = MoreAccurate($<expr>1->type, $<expr>3->type);
@@ -534,7 +534,7 @@ expr3 : expr2 TMUL expr3 { $<expr>$ = new Node("EXPR", "MUL");
                             $<expr>$->Children.push_back($<term>3);
                           }
                         }
-     | expr2 TDIV expr3 { $<expr>$ = new Node("EXPR", "DIV");
+     | expr3 TDIV expr2 { $<expr>$ = new Node("EXPR", "DIV");
                           assert($<expr>1->type == "int_char" || $<expr>1->type == "double_float");
                           assert($<expr>3->type == "int_char" || $<expr>3->type == "double_float");
                           $<expr>$->type = MoreAccurate($<expr>1->type, $<expr>3->type);
@@ -549,7 +549,7 @@ expr3 : expr2 TMUL expr3 { $<expr>$ = new Node("EXPR", "MUL");
                             $<expr>$->Children.push_back($<term>3);
                           }
                         }
-     | expr2 TMOD expr3 { $<expr>$ = new Node("EXPR", "MOD");
+     | expr3 TMOD expr2 { $<expr>$ = new Node("EXPR", "MOD");
                           assert($<expr>1->type == "int_char");
                           assert($<expr>3->type == "int_char");
                           $<expr>$->type = "int_char";

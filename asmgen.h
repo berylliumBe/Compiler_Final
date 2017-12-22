@@ -6,6 +6,8 @@ void TacToAsm() {
   tacin.open("tac.txt");
   asmout.open("program.asm");
 
-  asmout << "meow!!!!!!!!!!!!!!!!!!!!!";
+  tacin.close();
+  asmout.close();
+
   return;
 }
