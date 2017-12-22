@@ -1,42 +1,39 @@
 start:
-  num = 0
-  times = 0
   n = _ReadInteger
-  i = 0
-_L1:
-  _r1 = i COMP_LT n
-  IfZ _r1 Goto _L2
-  j = 0
-_L3:
-  _r2 = j COMP_LT n
-  IfZ _r2 Goto _L4
-  _r3 = i MUL 1.0
-  _r4 = _r3 DIV n
-  xx = _r4
-  _r5 = j MUL 1.0
-  _r6 = _r5 DIV n
-  yy = _r6
-  _r7 = xx MUL xx
-  _r8 = yy MUL yy
-  _r9 = _r7 ADD _r8
-  _r10 = _r9 COMP_LT 1
-  IfZ _r10 Goto _L5
-  _r11 = num SUSADD
-  Goto _L6
-_L5:
-  _r12 = num SUSMINUS
-_L6:
-  _r13 = times SUSADD
-  _r14 = j SUSADD
-  Goto _L3
-_L4:
-  _r15 = i SUSADD
-  Goto _L1
-_L2:
-  _r16 = num MUL 1.0
-  _r17 = _r16 DIV times
-  _r18 = _r17 MUL 4
-  ans = _r18
-  PushParam ans
+  a1 = 1
+  a2 = 1
+  _r1 = n COMP_EQL 1
+  IfZ _r1 Goto _L1
+  PushParam a1
   LCall _PrintInt
   PopParams 4
+  Goto _L2
+_L1:
+_L2:
+  _r2 = n COMP_EQL 2
+  IfZ _r2 Goto _L3
+  PushParam a2
+  LCall _PrintInt
+  PopParams 4
+  Goto _L4
+_L3:
+_L4:
+  i = 3
+_L5:
+  _r3 = i COMP_LE n
+  IfZ _r3 Goto _L6
+  _r4 = a1 ADD a2
+  a3 = _r4
+  a1 = a2
+  a2 = a3
+  _r5 = i SUSADD
+  Goto _L5
+_L6:
+  _r6 = n COMP_GE 3
+  IfZ _r6 Goto _L7
+  PushParam a3
+  LCall _PrintInt
+  PopParams 4
+  Goto _L8
+_L7:
+_L8:

@@ -1,7 +1,8 @@
-int a1,a2,a3,n;
+//int a1,a2,a3,n;
 int main()
 {
     //cout << "Hello world!" << endl;
+    int a1, a2, a3, n;
     read(n);
     a1=1;
     a2=1;

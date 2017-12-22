@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <set>
 
 using namespace std;
 
@@ -20,6 +21,17 @@ string StandardTail = "\
   return 0; \n\
 } \n\
 ";
+
+set<string> symbols;
+
+void PrintVar(string var, string type) {
+  cppout << "  ";
+  if (symbols.find(var) == symbols.end()) {
+    cppout << type << " ";
+    symbols.insert(var);
+  }
+  cppout << var << ";" << endl;
+}
 
 void TacToCpp () {
   tacin.open("tac.txt");
@@ -68,12 +80,12 @@ void TacToCpp () {
       // n = ImmediateValue
       if (elements[2] == "_ReadInteger") {
         string var = elements[0];
-        cppout << "  int " << var << ";" << endl;
+        PrintVar(var, "int");
         cppout << "  cin >> " << var << ";" << endl;
       }
       else if (elements[1] == "=") {
         string var = elements[0];
-        cppout << "  int " << var << ";" << endl;
+        PrintVar(var, "int");
         cppout << "  " << var << " = " << elements[2] << ";" << endl;
       }
     }
@@ -83,25 +95,25 @@ void TacToCpp () {
       if (elements[2] == "PRSADD") {
         string a = elements[0];
         string b = elements[3];
-        cppout << "  int " << a << ";" << endl;
+        PrintVar(a, "int");
         cppout << "  " << a << " = ++" << b << ";" << endl;
       }
       else if (elements[2] == "PRSMINUS") {
         string a = elements[0];
         string b = elements[3];
-        cppout << "  int " << a << ";" << endl;
+        PrintVar(a, "int");
         cppout << "  " << a << " = --" << b << ";" << endl;
       }
       else if (elements[3] == "SUSADD") {
         string a = elements[0];
         string b = elements[2];
-        cppout << "  int " << a << ";" << endl;
+        PrintVar(a, "int");
         cppout << "  " << a << " = " << b << "++;" << endl;
       }
       else if (elements[3] == "SUSMINUS") {
         string a = elements[0];
         string b = elements[2];
-        cppout << "  int " << a << ";" << endl;
+        PrintVar(a, "int");
         cppout << "  " << a << " = " << b << "--;" << endl;
       }
       else if (elements[0] == "IfZ") {
@@ -118,47 +130,47 @@ void TacToCpp () {
       string op = elements[3];
 
       if (op == "MUL") {
-        cppout << "  double " << a << ";" << endl;
+        PrintVar(a, "double");
         cppout << "  " << a << " = " << b << " * " << c << ";" << endl;
       }
       else if (op == "DIV") {
-        cppout << "  double " << a << ";" << endl;
+        PrintVar(a, "double");
         cppout << "  " << a << " = " << b << " / " << c << ";" << endl;
       }
       else if (op == "MOD") {
-        cppout << "  int " << a << ";" << endl;
+        PrintVar(a, "int");
         cppout << "  " << a << " = " << b << " % " << c << ";" << endl;
       }
       else if (op == "ADD") {
-        cppout << "  double " << a << ";" << endl;
+        PrintVar(a, "double");
         cppout << "  " << a << " = " << b << " + " << c << ";" << endl;
       }
       else if (op == "MINUS") {
-        cppout << "  double " << a << ";" << endl;
+        PrintVar(a, "double");
         cppout << "  " << a << " = " << b << " - " << c << ";" << endl;
       }
       else if (op == "COMP_LT") {
-        cppout << "  bool " << a << ";" << endl;
+        PrintVar(a, "bool");
         cppout << "  " << a << " = " << b << " < " << c << ";" << endl;
       }
       else if (op == "COMP_GT") {
-        cppout << "  bool " << a << ";" << endl;
+        PrintVar(a, "bool");
         cppout << "  " << a << " = " << b << " > " << c << ";" << endl;
       }
       else if (op == "COMP_LE") {
-        cppout << "  bool " << a << ";" << endl;
+        PrintVar(a, "bool");
         cppout << "  " << a << " = " << b << " <= " << c << ";" << endl;
       }
       else if (op == "COMP_GE") {
-        cppout << "  bool " << a << ";" << endl;
+        PrintVar(a, "bool");
         cppout << "  " << a << " = " << b << " >= " << c << ";" << endl;
       }
       else if (op == "COMP_EQL") {
-        cppout << "  bool " << a << ";" << endl;
+        PrintVar(a, "bool");
         cppout << "  " << a << " = " << b << " == " << c << ";" << endl;
       }
       else if (op == "COMP_NE") {
-        cppout << "  bool " << a << ";" << endl;
+        PrintVar(a, "bool");
         cppout << "  " << a << " = " << b << " != " << c << ";" << endl;
       }
     }
