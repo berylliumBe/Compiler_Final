@@ -1,7 +1,7 @@
 //get pi
 int main()
 {
-    int num,times,n;
+    int num=0,times=0,n;
     read(n);
     for (int i=0;i<n;i++)
         for (int j=0;j<n;j++)

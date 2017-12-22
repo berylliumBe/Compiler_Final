@@ -44,6 +44,7 @@ void TacToCpp () {
     }
     else if (elements.size() == 2) {
       // PushParam | PopParams | LCall
+      // Goto
       if (elements[0] == "PushParam") {
         string var = elements[1];
         cppout << "  _intparam = " << var << ";" << endl;
@@ -57,22 +58,56 @@ void TacToCpp () {
           cppout << "  cout << _intparam;" << endl;
         }
       }
+      else if (elements[0] == "Goto") {
+        string label = elements[1];
+        cppout << "  goto " << label << ";" << endl;
+      }
     }
     else if (elements.size() == 3) {
       // n = _ReadInteger
+      // n = ImmediateValue
       if (elements[2] == "_ReadInteger") {
         string var = elements[0];
         cppout << "  int " << var << ";" << endl;
         cppout << "  cin >> " << var << ";" << endl;
       }
+      else if (elements[1] == "=") {
+        string var = elements[0];
+        cppout << "  int " << var << ";" << endl;
+        cppout << "  " << var << " = " << elements[2] << ";" << endl;
+      }
     }
     else if (elements.size() == 4) {
       // PRSADD | SUSADD
+      // IfZ x Goto x
       if (elements[2] == "PRSADD") {
         string a = elements[0];
         string b = elements[3];
         cppout << "  int " << a << ";" << endl;
         cppout << "  " << a << " = ++" << b << ";" << endl;
+      }
+      else if (elements[2] == "PRSMINUS") {
+        string a = elements[0];
+        string b = elements[3];
+        cppout << "  int " << a << ";" << endl;
+        cppout << "  " << a << " = --" << b << ";" << endl;
+      }
+      else if (elements[3] == "SUSADD") {
+        string a = elements[0];
+        string b = elements[2];
+        cppout << "  int " << a << ";" << endl;
+        cppout << "  " << a << " = " << b << "++;" << endl;
+      }
+      else if (elements[3] == "SUSMINUS") {
+        string a = elements[0];
+        string b = elements[2];
+        cppout << "  int " << a << ";" << endl;
+        cppout << "  " << a << " = " << b << "--;" << endl;
+      }
+      else if (elements[0] == "IfZ") {
+        string cond = elements[1];
+        string label = elements[3];
+        cppout << "  if (!" << cond <<") goto " << label << ";" << endl;
       }
     }
     else if (elements.size() == 5) {
@@ -83,19 +118,48 @@ void TacToCpp () {
       string op = elements[3];
 
       if (op == "MUL") {
-        cppout << "  double " << a << " = " << b << " * " << c << ";" << endl;
+        cppout << "  double " << a << ";" << endl;
+        cppout << "  " << a << " = " << b << " * " << c << ";" << endl;
       }
       else if (op == "DIV") {
-        cppout << "  double " << a << " = " << b << " / " << c << ";" << endl;
+        cppout << "  double " << a << ";" << endl;
+        cppout << "  " << a << " = " << b << " / " << c << ";" << endl;
       }
       else if (op == "MOD") {
-        cppout << "  int " << a << " = " << b << " % " << c << ";" << endl;
+        cppout << "  int " << a << ";" << endl;
+        cppout << "  " << a << " = " << b << " % " << c << ";" << endl;
       }
       else if (op == "ADD") {
-        cppout << "  double " << a << " = " << b << " + " << c << ";" << endl;
+        cppout << "  double " << a << ";" << endl;
+        cppout << "  " << a << " = " << b << " + " << c << ";" << endl;
       }
       else if (op == "MINUS") {
-        cppout << "  double " << a << " = " << b << " - " << c << ";" << endl;
+        cppout << "  double " << a << ";" << endl;
+        cppout << "  " << a << " = " << b << " - " << c << ";" << endl;
+      }
+      else if (op == "COMP_LT") {
+        cppout << "  bool " << a << ";" << endl;
+        cppout << "  " << a << " = " << b << " < " << c << ";" << endl;
+      }
+      else if (op == "COMP_GT") {
+        cppout << "  bool " << a << ";" << endl;
+        cppout << "  " << a << " = " << b << " > " << c << ";" << endl;
+      }
+      else if (op == "COMP_LE") {
+        cppout << "  bool " << a << ";" << endl;
+        cppout << "  " << a << " = " << b << " <= " << c << ";" << endl;
+      }
+      else if (op == "COMP_GE") {
+        cppout << "  bool " << a << ";" << endl;
+        cppout << "  " << a << " = " << b << " >= " << c << ";" << endl;
+      }
+      else if (op == "COMP_EQL") {
+        cppout << "  bool " << a << ";" << endl;
+        cppout << "  " << a << " = " << b << " == " << c << ";" << endl;
+      }
+      else if (op == "COMP_NE") {
+        cppout << "  bool " << a << ";" << endl;
+        cppout << "  " << a << " = " << b << " != " << c << ";" << endl;
       }
     }
   }
